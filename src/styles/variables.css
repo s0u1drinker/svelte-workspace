@@ -1,0 +1,54 @@
+:root {
+  /* Цвета */
+  --color-primary: #3b82f6;
+  --color-secondary: #7434b4;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  
+  --color-white: #fff;
+  --color-black: #000;
+
+  --color-bg: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-text: #1e293b;
+  --color-text-secondary: #64748b;
+
+  --gray: #a9a9a9;
+  
+  /* Шрифты */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size: 1rem;
+
+  /* Радиусы */
+  --radius: .5rem;
+  --radius-full: 9999px;
+  
+  /* Тени */
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* Отступы */
+  --indent: 1rem;
+  --indent-double: calc(var(--indent) * 2);/* 2x */
+  --indent-half: calc(var(--indent) / 2);/* 0.5x */
+  --indent-quarter: calc(var(--indent) / 4);/* 0.25x */
+  --indent-and-half: calc(var(--indent) + var(--indent-half)); /* 1.5x */
+  --indent-three-quarters: calc(var(--indent-half) + var(--indent-quarter));/* 0.75x */
+  
+  /* Брейкпоинты */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  
+  /* Transition */
+  --transition-fast: .15s ease;
+  --transition-base: .3s ease;
+  --transition-slow: .5s ease;
+  
+  /* Z-index */
+  --z-dropdown: 1000;
+  --z-modal: 1050;
+  --z-overlay: 1100;
+}
