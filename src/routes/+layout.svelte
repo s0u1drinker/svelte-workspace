@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Header from './../lib/components/Header/Header.svelte';
+  import Header from '$components/Header/Header.svelte';
   import '../app.css';
 </script>
 
@@ -9,4 +9,10 @@
   <slot />
 </main>
 
-<style></style>
+<style lang="postcss">
+  main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+</style>
