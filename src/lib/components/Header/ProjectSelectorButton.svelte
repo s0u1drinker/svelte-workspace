@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { PROJECT_TEXT } from "$lib/constants";
-  import { currentProjectName } from '$lib/stores/projectsStore';
+  import { PROJECT_TEXT } from "$constants";
+  import { currentProjectName } from '$stores/projectsStore';
 
-  $: projectNotSelected = !$currentProjectName
+  let projectNotSelected = $state(!$currentProjectName)
 </script>
 
 <button
