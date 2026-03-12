@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import type { IProject, IProjectsMap } from '$lib/types';
+import type { IProjectsMap } from '$types';
 
 /** Идентификатор текущего проекта. */
 export const currentProjectID = writable<number | null>(null);
