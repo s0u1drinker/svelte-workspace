@@ -14,17 +14,36 @@
 
 <style>
   .backlog {
-    padding: var(--indent);
-    height: 17rem;
-    display: flex;
-    flex-direction: column;
+    position: relative;
     gap: var(--indent);
-    overflow-x: auto;
+    flex-shrink: 0;
+    overflow-y: auto;
+    scrollbar-color: var(--gray) var(--color-border);
+    scrollbar-width: thin;
+
+    h3 {
+      text-align: center;
+      position: sticky;
+      padding: var(--indent);
+      top: 0;
+      z-index: 1;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0 0 -1rem 0;
+        background: var(--color-white);
+        background: linear-gradient(180deg, var(--color-white) 70%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+        pointer-events: none;
+        z-index: -1;
+      }
+    }
 
     &__inner {
       display: flex;
+      padding: var(--indent);
       gap: var(--indent);
-      width: fit-content;
+      flex-direction: column;
     }
   }
 </style>

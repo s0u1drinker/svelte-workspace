@@ -61,6 +61,10 @@
 
       &:hover {
         box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--color-danger), transparent 80%);
+
+        :global(.task-card__icon-urgent) {
+          opacity: 1;
+        }
       }
     }
 
@@ -106,8 +110,9 @@
       right: 0;
       bottom: 0;
       color: var(--color-danger);
-      opacity: .35;
+      opacity: .25;
       z-index: -1;
+      transition: opacity var(--transition-base);
     }
   }
 </style>

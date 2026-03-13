@@ -12,7 +12,9 @@
 <style lang="postcss">
   main {
     display: flex;
-    flex-direction: column;
-    height: 100%;
+
+    @media(--viewport-lg) {
+      height: calc(100vh - 6.25rem);
+    }
   }
 </style>
