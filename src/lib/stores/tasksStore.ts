@@ -11,7 +11,7 @@ export const tasks = writable<TTaskList>([
 		type: 'bug',
 		urgent: false,
 		ownerName: 'Дмитрий',
-		lastModified: '12.03.2026 10:10',
+		created: '12.03.2026 10:10',
 		deadline: '16.03.2026'
 	},
 	{
@@ -23,7 +23,7 @@ export const tasks = writable<TTaskList>([
 		type: 'feature',
 		urgent: true,
 		ownerName: 'Дмитрий',
-		lastModified: '12.03.2026 10:11',
+		created: '12.03.2026 10:11',
 		deadline: '16.03.2026'
 	},
 	{
@@ -34,7 +34,7 @@ export const tasks = writable<TTaskList>([
 		type: 'task',
 		urgent: false,
 		ownerName: 'Дмитрий',
-		lastModified: '12.03.2026 10:12',
+		created: '12.03.2026 10:12',
 		deadline: '16.03.2026'
 	},
 	{
@@ -45,7 +45,7 @@ export const tasks = writable<TTaskList>([
 		type: 'bug',
 		urgent: true,
 		ownerName: 'Дмитрий',
-		lastModified: '12.03.2026 10:13',
+		created: '12.03.2026 10:13',
 		deadline: '16.03.2026'
 	},
 	{
@@ -56,7 +56,7 @@ export const tasks = writable<TTaskList>([
 		type: 'bug',
 		urgent: false,
 		ownerName: 'Дмитрий',
-		lastModified: '12.03.2026 10:14',
+		created: '12.03.2026 10:14',
 		deadline: '16.03.2026'
 	}
 ]);

@@ -16,7 +16,7 @@ export interface ITask {
 	type: TTaskType;
 	urgent: boolean;
 	ownerName: string;
-	lastModified: string;
+	created: string;
 	deadline: string;
 }
 
