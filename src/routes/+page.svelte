@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Dashboard from "$components/Dashboard.svelte";
+  import Workspace from "$components/Workspace.svelte";
   import Backlog from "$components/Backlog.svelte";
 </script>
 
 <Backlog />
-<Dashboard />
+<Workspace />
 
 <style></style>
