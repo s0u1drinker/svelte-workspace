@@ -3,7 +3,7 @@
 </script>
 
 <div class="workspace">
-  <h3>Доска задач</h3>
+  <h3>Доска с задачами</h3>
   <Dashboard
     class="workspace__dashboard"
   />

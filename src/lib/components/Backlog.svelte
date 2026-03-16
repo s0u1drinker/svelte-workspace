@@ -1,12 +1,13 @@
 <script lang="ts">
   import TaskCard from "./TaskCard.svelte";
-  import { tasks } from '$stores/tasksStore'
+  import { TASK_STATUS } from '$constants'
+  import { getTasksByIdStatus } from '$stores/tasks.svelte'
 </script>
 
 <div class="backlog">
   <h3>Список задач</h3>
   <div class="backlog__inner">
-    {#each $tasks as task (task.id)}
+    {#each getTasksByIdStatus(TASK_STATUS.noStatus.id) as task (task.id)}
       <TaskCard {...task} />
     {/each}
   </div>

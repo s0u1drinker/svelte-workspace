@@ -1,21 +1,26 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
-	import type { ITask } from '$types';
+	import type { TTaskCard } from '$types';
 
-  let props: ITask = $props();
+  let props: TTaskCard = $props();
 
   let clType = $derived(props.type ? ` task-card_type_${props.type}` : '')
   let clUrgent = $derived(props.urgent ? ' task-card_urgent' : '')
-  let cl = $derived(`task-card${clType}${clUrgent}`)
+  let clMinimize = $derived(props.minimize ? ' task-card_minimize' : '')
+  let cl = $derived(`task-card${clType}${clUrgent}${clMinimize}`)
 </script>
 
 <div class="{cl}">
   <div class="task-card__header">
     <span class="task-card__id">#{ props.idTask }</span>
-    <span class="task-card__date">{ props.created }</span>
+    {#if !props.minimize}
+      <span class="task-card__date">{ props.created }</span>
+    {/if}
   </div>
   <span class="task-card__title">{ props.title }</span>
-  <div class="task-card__deadline">Выполнить до: { props.deadline }</div>
+  {#if !props.minimize}
+    <div class="task-card__deadline">Выполнить до: { props.deadline }</div>
+  {/if}
   {#if props.urgent}
     <Icon
       icon="mdi:fire"
@@ -27,6 +32,7 @@
 <style lang="postcss">
   .task-card {
     --type-color: transparent;
+    --icon-urgent-size: 3rem;
 
     position: relative;
     overflow: hidden;
@@ -68,6 +74,16 @@
       }
     }
 
+    &_minimize {
+      width: auto;
+
+      :global(.task-card__icon-urgent) {
+        --icon-urgent-size: 2rem;
+        top: var(--indent-half);
+        right: var(--indent-half);
+      }
+    }
+
     &_type {
 
       &_bug {
@@ -104,8 +120,8 @@
     }
 
     :global(&__icon-urgent) {
-      width: 3rem;
-      height: 3rem;
+      width: var(--icon-urgent-size);
+      height: var(--icon-urgent-size);
       position: absolute;
       right: 0;
       bottom: 0;

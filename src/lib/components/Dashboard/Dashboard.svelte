@@ -1,26 +1,14 @@
 <script lang="ts">
 	import DashboardColumn from "./DashboardColumn.svelte";
+  import type { TTaskStatus } from '$types'
 
   const props: { class: string } = $props();
-  const columns: { idTaskStatus: number, title: string }[] = [
-    {
-      idTaskStatus: 1,
-      title: 'Спринт',
-    },
-    {
-      idTaskStatus: 2,
-      title: 'В работе',
-    },
-    {
-      idTaskStatus: 3,
-      title: 'Тестирование',
-    },
-  ]
+  const columns: TTaskStatus[] = ['sprint', 'inProgress', 'test']
 </script>
 
 <div class="dashboard {props.class}">
-  {#each columns as column (`column-status-${column.idTaskStatus}`)}
-    <DashboardColumn class="dashboard__column" {...column} />
+  {#each columns as column (`column-status-${column}`)}
+    <DashboardColumn class="dashboard__column" taskStatus={column} />
   {/each}
 </div>
 
@@ -29,6 +17,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 80%;
+    overflow: hidden;
 
     :global(&__column) {
       
