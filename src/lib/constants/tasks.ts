@@ -13,3 +13,27 @@ export const TASK_PREFIX = {
 	feature: 'F',
 	task: 'T'
 } as const satisfies TTaskPrefixMap;
+
+/** Статус задачи. */
+export const TASK_STATUS = {
+	noStatus: {
+		id: '0',
+		title: 'Без статуса'
+	},
+	sprint: {
+		id: '1',
+		title: 'Спринт'
+	},
+	inProgress: {
+		id: '2',
+		title: 'В работе'
+	},
+	test: {
+		id: '3',
+		title: 'Тестирование'
+	},
+	complete: {
+		id: '4',
+		title: 'Завершено'
+	}
+} as const;

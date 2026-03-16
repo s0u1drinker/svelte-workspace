@@ -1,5 +1,6 @@
+import type { TTaskStatus } from '$types';
+
 export interface IDashboardColumn {
-	idTaskStatus: number;
-	title: string;
+	taskStatus: TTaskStatus;
 	class: string;
 }

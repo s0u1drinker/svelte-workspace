@@ -1,4 +1,4 @@
-import { TASK_TYPE, TASK_PREFIX } from '$constants';
+import { TASK_TYPE, TASK_PREFIX, TASK_STATUS } from '$constants';
 import type { TCapitalzeFirstChar } from './utils';
 
 /** Тип задачи. */
@@ -11,6 +11,7 @@ export type TTaskId = `${(typeof TASK_PREFIX)[TTaskType]}-${number}`;
 export interface ITask {
 	id: number;
 	idTask: TTaskId;
+	idStatus: TTaskStatusId;
 	title: string;
 	descr: string;
 	type: TTaskType;
@@ -20,6 +21,10 @@ export interface ITask {
 	deadline: string;
 }
 
+export type TTaskCard = ITask & {
+	minimize?: boolean;
+};
+
 /** Список задач для хранилища. */
 export type TTaskList = ITask[];
 
@@ -27,3 +32,7 @@ export type TTaskList = ITask[];
 export type TTaskPrefixMap = {
 	[P in TTaskType]: TCapitalzeFirstChar<P>;
 };
+
+/** Иддентификатор статуса задачи. */
+export type TTaskStatus = keyof typeof TASK_STATUS;
+export type TTaskStatusId = (typeof TASK_STATUS)[TTaskStatus]['id'];
