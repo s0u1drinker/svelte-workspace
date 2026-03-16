@@ -20,7 +20,7 @@ const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 	},
 
 	{
-		files: ['**/*.svelte', '**/*.svelte.js'],
+		files: ['**/*.svelte', '**/*.svelte.js', '**/*.svelte.ts'],
 		languageOptions: {
 			parserOptions: {
 				parser: tsParser,
