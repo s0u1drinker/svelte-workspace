@@ -43,7 +43,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--indent-half);
-    width: 22rem;
     transition: box-shadow var(--transition-base);
 
     &::before {
@@ -75,7 +74,6 @@
     }
 
     &_minimize {
-      width: auto;
 
       :global(.task-card__icon-urgent) {
         --icon-urgent-size: 2rem;

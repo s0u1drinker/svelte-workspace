@@ -21,6 +21,7 @@
     overflow-y: auto;
     scrollbar-color: var(--gray) var(--color-border);
     scrollbar-width: thin;
+    width: 25rem;
 
     h3 {
       text-align: center;
