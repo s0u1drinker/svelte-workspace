@@ -2,18 +2,24 @@
   import TaskCard from "./TaskCard.svelte";
   import { TASK_STATUS } from '$constants'
   import { getTasksByIdStatus } from '$stores/tasks.svelte'
+
+  const tasks = $derived(getTasksByIdStatus(TASK_STATUS.noStatus.id));
 </script>
 
 <div class="backlog">
   <h3>Список задач</h3>
   <div class="backlog__inner">
-    {#each getTasksByIdStatus(TASK_STATUS.noStatus.id) as task (task.id)}
-      <TaskCard {...task} />
-    {/each}
+    {#if tasks.length}
+      {#each tasks as task (task.id)}
+        <TaskCard {...task} />
+      {/each}
+    {:else}
+      <div class="backlog__no-data">Нет задач</div>
+    {/if}
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   .backlog {
     position: relative;
     gap: var(--indent);
@@ -21,7 +27,7 @@
     overflow-y: auto;
     scrollbar-color: var(--gray) var(--color-border);
     scrollbar-width: thin;
-    width: 25rem;
+    width: 24rem;
 
     h3 {
       text-align: center;
@@ -46,6 +52,12 @@
       padding: var(--indent);
       gap: var(--indent);
       flex-direction: column;
+    }
+
+    &__no-data {
+      color: var(--gray);
+      text-align: center;
+      font-style: italic;
     }
   }
 </style>

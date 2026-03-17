@@ -5,7 +5,7 @@
   import type { IDashboardColumn } from '$types';
 
   const props: IDashboardColumn = $props();
-  const tasks = getTasksByIdStatus(TASK_STATUS[props.taskStatus].id)
+  const tasks = $derived(getTasksByIdStatus(TASK_STATUS[props.taskStatus].id));
 </script>
 
 <div class="d-column {props.class}">
