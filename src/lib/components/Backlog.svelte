@@ -1,5 +1,6 @@
 <script lang="ts">
   import TaskCard from "./TaskCard.svelte";
+  import NoDataText from "./NoDataText.svelte";
   import { TASK_STATUS } from '$constants'
   import { getTasksByIdStatus } from '$stores/tasks.svelte'
 
@@ -14,7 +15,7 @@
         <TaskCard {...task} />
       {/each}
     {:else}
-      <div class="backlog__no-data">Нет задач</div>
+      <NoDataText text="Нет задач" />
     {/if}
   </div>
 </div>
@@ -52,12 +53,6 @@
       padding: var(--indent);
       gap: var(--indent);
       flex-direction: column;
-    }
-
-    &__no-data {
-      color: var(--gray);
-      text-align: center;
-      font-style: italic;
     }
   }
 </style>

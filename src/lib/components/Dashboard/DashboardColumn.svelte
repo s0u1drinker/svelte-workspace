@@ -1,5 +1,6 @@
 <script lang="ts">
   import TaskCard from "$components/TaskCard.svelte";
+  import NoDataText from "$components/NoDataText.svelte";
   import { TASK_STATUS } from '$constants'
   import { getTasksByIdStatus } from '$stores/tasks.svelte'
   import type { IDashboardColumn } from '$types';
@@ -16,7 +17,7 @@
         <TaskCard minimize {...task} />
       {/each}
     {:else}
-      <div class="d-column__no-data">Нет задач</div>
+      <NoDataText />
     {/if}
   </div>
 </div>
@@ -46,12 +47,6 @@
       flex-direction: column;
       gap: var(--indent);
       padding: var(--padding);
-    }
-
-    &__no-data {
-      color: var(--gray);
-      text-align: center;
-      font-style: italic;
     }
   }
 </style>
