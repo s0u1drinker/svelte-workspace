@@ -4,11 +4,20 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  scrollbar-gutter: auto;
+}
+
 body {
   font-family: var(--font-family);
   font-size: var(--font-size);
   color: var(--color-text);
   line-height: 1.5;
+
+  &:has(dialog[open]) {
+    overflow: hidden;
+  }
 }
 
 #app {

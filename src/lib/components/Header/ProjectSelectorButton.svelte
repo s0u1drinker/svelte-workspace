@@ -1,14 +1,27 @@
 <script lang="ts">
   import { PROJECT_TEXT } from "$constants";
+  import Modal from "$components/Modal.svelte";
   import { currentProjectName } from '$stores/projectsStore';
 
   let projectNotSelected = $state(!$currentProjectName)
+  let open = $state(false);
 </script>
 
 <button
   class="p-selector-button"
   class:p-selector-button_no-select={projectNotSelected}
+  onclick={() => (open = true)}
 >{ $currentProjectName || PROJECT_TEXT.selectProject }</button>
+
+<Modal
+  bind:open
+>
+  {#snippet header()}
+    <h3>Модальное окно</h3>
+  {/snippet}
+
+  <p>Пример модального окна.</p>
+</Modal>
 
 <style lang="postcss">
   .p-selector-button {
