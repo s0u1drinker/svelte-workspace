@@ -10,11 +10,15 @@
 </main>
 
 <style lang="postcss">
+  :root {
+    --header-height: 6.5rem;
+  }
+
   main {
     display: flex;
 
     @media(--viewport-lg) {
-      height: calc(100vh - 6.25rem);
+      height: calc(100vh - var(--header-height));
     }
   }
 </style>
