@@ -11,11 +11,12 @@
 <style lang="postcss">
   header {
     display: grid;
+    grid-template-rows: 1fr auto;
     box-shadow: var(--shadow);
     z-index: 10;
 
     @media(--viewport-lg) {
-      height: 6.25rem;
+      height: var(--header-height);
     }
   }
 </style>

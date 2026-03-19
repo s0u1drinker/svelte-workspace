@@ -5,7 +5,7 @@
 <style lang="postcss">
   .toolbar {
     padding: var(--indent-quarter);
-    background-color: var(--color-bg);
+    border-top: var(--border);
 
     @media (--viewport-md) {
       padding: var(--indent-half);

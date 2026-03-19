@@ -26,7 +26,6 @@
   .d-column {
     --padding: var(--indent);
 
-    border: var(--border);
     overflow-y: auto;
     scrollbar-color: var(--gray) var(--color-border);
     scrollbar-width: thin;

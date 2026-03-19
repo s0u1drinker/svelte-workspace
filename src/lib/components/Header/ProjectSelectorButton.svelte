@@ -1,27 +1,19 @@
 <script lang="ts">
   import { PROJECT_TEXT } from "$constants";
-  import Modal from "$components/Modal.svelte";
-  import { currentProjectName } from '$stores/projectsStore';
+  import ModalProjects from "$components/Modal/ModalProjects.svelte";
+  import { projectsStore } from '$stores/projects.svelte';
 
-  let projectNotSelected = $state(!$currentProjectName)
-  let open = $state(false);
+  let buttonText = $derived(projectsStore.currentProjectName || PROJECT_TEXT.selectProject)
+  let open = $state<boolean>(false)
 </script>
 
 <button
   class="p-selector-button"
-  class:p-selector-button_no-select={projectNotSelected}
+  class:p-selector-button_no-select={!open && !projectsStore.isProjectSelected}
   onclick={() => (open = true)}
->{ $currentProjectName || PROJECT_TEXT.selectProject }</button>
+>{ buttonText }</button>
 
-<Modal
-  bind:open
->
-  {#snippet header()}
-    <h3>Модальное окно</h3>
-  {/snippet}
-
-  <p>Пример модального окна.</p>
-</Modal>
+<ModalProjects bind:open />
 
 <style lang="postcss">
   .p-selector-button {
@@ -35,7 +27,8 @@
       width: 1rem;
       height: 1rem;
       color: var(--gray);
-      transition: color var(--transition-base);
+      transition: color var(--transition-base), transform var(--transition-base);
+      transform-origin: bottom center;
     }
 
     &::before {
@@ -58,16 +51,52 @@
       }
     }
 
-    &:focus-visible {
-
-      &::before,
-      &::after {
-        opacity: 0;
-      }
-    }
-
     &_no-select {
       color: var(--color-danger);
+
+      &::before {
+        animation: rotate-before 1s linear 1s forwards, move-before 1.5s linear 2s forwards infinite;
+      }
+
+      &::after {
+        animation: rotate-after 1s linear 1s forwards, move-after 1.5s linear 2s forwards infinite;
+      }
+    }
+  }
+
+  @keyframes rotate-before {
+    100% {
+      rotate: .5turn;
+    }
+  }
+
+  @keyframes rotate-after {
+    100% {
+      rotate: -.5turn;
+    }
+  }
+
+  @keyframes move-before {
+    12.5% {
+      transform: translateX(1rem);
+    }
+    25%, 50%, 100% {
+      transform: translateX(0);
+    }
+    32.5% {
+      transform: translateX(.5rem);
+    }
+  }
+
+  @keyframes move-after {
+    12.5% {
+      transform: translateX(-1rem);
+    }
+    25%, 50%, 100% {
+      transform: translateX(0);
+    }
+    32.5% {
+      transform: translateX(-.5rem);
     }
   }
 </style>

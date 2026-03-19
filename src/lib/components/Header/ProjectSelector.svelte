@@ -1,11 +1,11 @@
 <script lang="ts">
   import ProjectSelectorButton from "./ProjectSelectorButton.svelte";
-  import { currentProjectName } from '$lib/stores/projectsStore';
+  import { projectsStore } from '$stores/projects.svelte';
   import { PROJECT_TEXT } from "$lib/constants";
 </script>
 
 <div class="p-selector">
-  {#if $currentProjectName}
+  {#if projectsStore.currentProjectID}
     <span class="p-selector__title">{ PROJECT_TEXT.title }</span>
   {/if}
   <ProjectSelectorButton />
@@ -15,7 +15,6 @@
   .p-selector {
     display: flex;
     flex-direction: column;
-    gap: var(--indent-half);
     align-items: center;
 
     &__title {
