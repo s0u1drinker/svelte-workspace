@@ -1,9 +1,12 @@
+export type TProjectID = string;
+
 /** Проект. */
 export interface IProject {
-	id: number;
+	id: TProjectID;
 	name: string;
 	description: string;
+	icon: string;
 }
 
 /** Список проектов. */
-export type IProjectsMap = Map<number, IProject>;
+export type IProjectsMap = Record<string, IProject>;

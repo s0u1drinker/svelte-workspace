@@ -1,5 +1,6 @@
 import { TASK_TYPE, TASK_PREFIX, TASK_STATUS } from '$constants';
 import type { TCapitalzeFirstChar } from './utils';
+import type { TProjectID } from './projects';
 
 /** Тип задачи. */
 export type TTaskType = keyof typeof TASK_TYPE;
@@ -12,6 +13,7 @@ export interface ITask {
 	id: number;
 	idTask: TTaskId;
 	idStatus: TTaskStatusId;
+	idProject: TProjectID;
 	title: string;
 	descr: string;
 	type: TTaskType;

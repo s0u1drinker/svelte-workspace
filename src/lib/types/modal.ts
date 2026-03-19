@@ -8,3 +8,5 @@ export interface IModal {
 	onClose?: () => void;
 	closable?: boolean;
 }
+
+export type IModalProjects = Pick<IModal, 'open'>;
