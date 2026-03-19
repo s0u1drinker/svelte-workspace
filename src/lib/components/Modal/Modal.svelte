@@ -106,6 +106,7 @@
     &::backdrop {
       background: rgba(0, 0, 0, 0.25);
       backdrop-filter: var(--filter-blur);
+      animation: fadeOut 1s forwards;
     }
 
     &__content {
@@ -142,6 +143,15 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
     }
   }
 
