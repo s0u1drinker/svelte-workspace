@@ -1,10 +1,12 @@
-import type { ITask, TTaskList } from '$types';
+import { projectsStore } from './projects.svelte';
+import type { ITask, TTaskList, TProjectID } from '$types';
 
 const tasks = $state<TTaskList>([
 	{
 		id: 1,
 		idTask: 'B-1',
 		idStatus: '0',
+		idProject: '1',
 		title: 'Исправить баг',
 		descr:
 			'Баг появляется и исчезает внезапно. Никто не может его воспроизвести, т.к. никто не знает из-за чего он появляется.',
@@ -18,6 +20,7 @@ const tasks = $state<TTaskList>([
 		id: 2,
 		idTask: 'F-1',
 		idStatus: '0',
+		idProject: '1',
 		title: 'Реализовать новую фичу',
 		descr:
 			'Нужно реализовать мега-крутую, просто феерически невообразимую новую фичу. Срок: 1 час.',
@@ -31,6 +34,7 @@ const tasks = $state<TTaskList>([
 		id: 3,
 		idTask: 'T-1',
 		idStatus: '0',
+		idProject: '1',
 		title: 'Простая таска. Ничего сложного.',
 		descr: '',
 		type: 'task',
@@ -43,6 +47,7 @@ const tasks = $state<TTaskList>([
 		id: 4,
 		idTask: 'B-2',
 		idStatus: '0',
+		idProject: '1',
 		title: 'Нашёл баг. Нет, не так... НАШЁЛ БАГ!!1',
 		descr: 'Описания не будет. Баг просто есть. Его не может не быть. Нужно найти и исправить.',
 		type: 'bug',
@@ -55,6 +60,7 @@ const tasks = $state<TTaskList>([
 		id: 5,
 		idTask: 'B-3',
 		idStatus: '0',
+		idProject: '1',
 		title: 'Ещё один баг',
 		descr: 'Не кажется ли Вам, товарищ разработчик, что багов в Вашей поделке слишком много?',
 		type: 'bug',
@@ -67,6 +73,7 @@ const tasks = $state<TTaskList>([
 		id: 6,
 		idTask: 'F-2',
 		idStatus: '1',
+		idProject: '1',
 		title: 'Фича в спринте',
 		descr: 'Какая-то фича в графе "Спринт".',
 		type: 'feature',
@@ -79,6 +86,7 @@ const tasks = $state<TTaskList>([
 		id: 7,
 		idTask: 'B-4',
 		idStatus: '2',
+		idProject: '1',
 		title: 'Баг в работе',
 		descr: 'Исправление какого-то бага.',
 		type: 'bug',
@@ -91,6 +99,7 @@ const tasks = $state<TTaskList>([
 		id: 8,
 		idTask: 'T-2',
 		idStatus: '3',
+		idProject: '1',
 		title: 'Задача на тесте',
 		descr: 'Просто задача на тесте.',
 		type: 'task',
@@ -116,11 +125,29 @@ export function updateTask(id: number, updatedFields: Partial<ITask>) {
 }
 
 /** Получить задачу по id. */
-export function getTaskById(id: number): ITask | undefined {
-	return tasks.find((task) => task.id === id);
+export function getTaskById(id: number): ITask | null {
+	if (typeof id !== 'number') {
+		return null;
+	}
+
+	return tasks.find((task) => task.id === id) || null;
 }
 
-/** Получить задачи с определённым статусом. */
-export function getTasksByIdStatus(idStatus: string) {
-	return tasks.filter((task) => task.idStatus === idStatus);
+/**
+ * Получить задачи с определённым статусом.
+ * Если идентификатор проекта не передан, то фильтрация происходит по идентификатору выбранного проекта.
+ * @param idStatus Идентификатор статуса.
+ * @param idProject Идентификатор проекта (опционально).
+ * @returns Массив с задачами.
+ */
+export function getTasksByIdStatus(idStatus: string, idProject?: TProjectID) {
+	if (!idStatus) {
+		return [];
+	}
+
+	const idProjectForFilter = idProject ?? projectsStore.currentProjectID;
+
+	return tasks.filter(
+		(task) => task.idStatus === idStatus && task.idProject === idProjectForFilter
+	);
 }
