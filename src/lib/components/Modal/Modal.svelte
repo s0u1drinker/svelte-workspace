@@ -9,6 +9,8 @@
     buttons,
     onClose,
     closable = true,
+    class: className = '',
+    position = 'center'
   }: IModal = $props();
 
   let dialogEl: HTMLDialogElement | null = null;
@@ -49,7 +51,7 @@
 
 <dialog
   bind:this={dialogEl}
-  class="modal"
+  class="modal modal_{position}{className && ` ${className}`}"
   onclose={handleClose}
   onclick={handleClick}
 >
@@ -84,9 +86,6 @@
 
 <style lang="postcss">
   .modal {
-    top: 50%;
-    left: 50%;
-    width: 30rem;
     border: var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
@@ -109,12 +108,49 @@
       animation: fadeOut 1s forwards;
     }
 
+    &_center {
+      --open-modal-from: translate(-50%, -100%);
+      --open-modal: translate(-50%, -50%);
+      --close-modal-to: translate(-50%, 0);
+      
+      top: 50%;
+      left: 50%;
+
+      .modal__content {
+        padding: var(--indent);
+      }
+
+      .modal__header {
+        text-align: center;
+        padding: 0 var(--indent);
+      }
+    }
+
+    &_left {
+      --open-modal-from: translate(-50%, -50%);
+      --open-modal: translate(0, -50%);
+      --close-modal-to: translate(-50%, -50%);
+
+      top: 50%;
+      height: 100%;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+
+      & > .modal__content {
+        padding: var(--indent-double);
+      }
+
+      & .modal__body {
+        flex: 1;
+      }
+    }
+
     &__content {
       display: flex;
       flex-direction: column;
       gap: var(--indent);
-      padding: var(--indent);
       position: relative;
+      height: 100%;
     }
 
     &__close {
@@ -131,9 +167,11 @@
       }
     }
 
-    &__header {
-      text-align: center;
-      padding: 0 var(--indent);
+    &__buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--indent);
+      justify-content: center;
     }
   }
 
@@ -158,22 +196,22 @@
   @keyframes openModal {
     from {
       opacity: 0;
-      transform: translate(-50%, -100%);
+      transform: var(--open-modal-from);
     }
     to {
       opacity: 1;
-      transform: translate(-50%, -50%);
+      transform: var(--open-modal);
     }
   }
 
   @keyframes closeModal {
     from {
       opacity: 1;
-      transform: translate(-50%, -50%);
+      transform: var(--open-modal);
     }
     to {
       opacity: 0;
-      transform: translate(-50%, 0);
+      transform: var(--close-modal-to);
     }
   }
 </style>

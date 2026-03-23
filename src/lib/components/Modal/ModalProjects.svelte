@@ -10,6 +10,7 @@
 
 <Modal
   bind:open
+  class="modal-projects"
 >
   {#snippet header()}
     <h3>Выберите проект</h3>
@@ -17,3 +18,9 @@
 
   <ModalProjectsList onclick={closeModal} />
 </Modal>
+
+<style lang="postcss">
+  :global(.modal-projects) {
+    width: 30rem;
+  }
+</style>
