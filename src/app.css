@@ -1,6 +1,6 @@
 @import './styles/normalize.css';
 
 @import './styles/variables.css';
-@import './styles/mixins.postcss';
+@import './styles/mixins.pcss';
 
 @import './styles/base.postcss';

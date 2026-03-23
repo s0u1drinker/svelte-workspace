@@ -1,3 +1,5 @@
+const path = require('node:path')
+
 module.exports = {
   plugins: {
     '@csstools/postcss-global-data': {
@@ -5,7 +7,7 @@ module.exports = {
     },
     'postcss-custom-media': {},
     'postcss-mixins': {
-      import: './src/styles/mixins.postcss',
+      mixinsFiles: [path.resolve(__dirname, './src/styles/mixins.pcss')],
     },
     'postcss-nested': {},
     autoprefixer: {},
