@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Dashboard from './Dashboard/Dashboard.svelte'
+  import Dashboard from './Dashboard.svelte'
 </script>
 
 <div class="workspace">
