@@ -1,18 +1,18 @@
-import { TASK_TYPE, TASK_PREFIX, TASK_STATUS } from '$constants';
-import type { TCapitalzeFirstChar } from './utils';
+import { TASK_TYPE, TASK_STATUS, TASK_BUTTONS } from '$constants';
+import type { TButtonStyle } from './button';
 import type { TProjectID } from './projects';
 
 /** Тип задачи. */
 export type TTaskType = keyof typeof TASK_TYPE;
 
 /** Идентификатор задачи. */
-export type TTaskId = `${(typeof TASK_PREFIX)[TTaskType]}-${number}`;
+export type TTaskId = `${(typeof TASK_TYPE)[TTaskType]['prefix']}-${number}`;
 
 /** Задача. */
 export interface ITask {
 	id: number;
 	idTask: TTaskId;
-	idStatus: TTaskStatusId;
+	idStatus: TTaskStatus;
 	idProject: TProjectID;
 	title: string;
 	descr: string;
@@ -23,18 +23,35 @@ export interface ITask {
 	deadline: string;
 }
 
+/** Комопнент для отображдения списка задач. */
+export interface ITaskList {
+	listTitle: string;
+	idStatus: TTaskStatus;
+	class?: string;
+	minimizeCard?: boolean;
+	noDataText?: string;
+	titleStyle?: 'blur' | 'border';
+}
+
 export type TTaskCard = ITask & {
 	minimize?: boolean;
+	onclick?: () => void;
 };
 
 /** Список задач для хранилища. */
 export type TTaskList = ITask[];
 
-/** Тип для константы TASK_PREFIX */
-export type TTaskPrefixMap = {
-	[P in TTaskType]: TCapitalzeFirstChar<P>;
-};
-
-/** Иддентификатор статуса задачи. */
+/** Идентификатор статуса задачи. */
 export type TTaskStatus = keyof typeof TASK_STATUS;
-export type TTaskStatusId = (typeof TASK_STATUS)[TTaskStatus]['id'];
+export type TTaskStatusList = (typeof TASK_STATUS)[TTaskStatus][];
+
+/** Кнопки в модальном окне. */
+export type TTaskButton = keyof typeof TASK_BUTTONS;
+export type TTaskModalButtons = {
+	[P in TTaskButton]: {
+		title: string;
+		onClick: () => void;
+		buttonStyle?: TButtonStyle;
+		statusToShow?: TTaskStatus[];
+	};
+};

@@ -1,39 +1,53 @@
-import type { TTaskPrefixMap } from '$types';
-
 /** Типы задач. */
 export const TASK_TYPE = {
-	bug: 'bug',
-	feature: 'feature',
-	task: 'task'
+	bug: {
+		title: 'Баг',
+		prefix: 'B',
+		color: 'tomato'
+	},
+	feature: {
+		title: 'Новый функционал',
+		prefix: 'F',
+		color: 'purple'
+	},
+	task: {
+		title: 'Общая',
+		prefix: 'T',
+		color: 'skyblue'
+	}
 } as const;
-
-/** Префикс идентификатора задачи. */
-export const TASK_PREFIX = {
-	bug: 'B',
-	feature: 'F',
-	task: 'T'
-} as const satisfies TTaskPrefixMap;
 
 /** Статус задачи. */
 export const TASK_STATUS = {
 	noStatus: {
-		id: '0',
+		id: 'noStatus',
 		title: 'Без статуса'
 	},
 	sprint: {
-		id: '1',
+		id: 'sprint',
 		title: 'Спринт'
 	},
 	inProgress: {
-		id: '2',
+		id: 'inProgress',
 		title: 'В работе'
 	},
 	test: {
-		id: '3',
+		id: 'test',
 		title: 'Тестирование'
 	},
 	complete: {
-		id: '4',
+		id: 'complete',
 		title: 'Завершено'
 	}
+} as const;
+
+/** Кнопки в модальном окне. */
+export const TASK_BUTTONS = {
+	add: 'Добавить в спринт',
+	take: 'Взять в работу',
+	delete: 'Удалить',
+	test: 'На тест',
+	return: 'Вернуть в работу',
+	done: 'Готово',
+	close: 'Закрыть'
 } as const;

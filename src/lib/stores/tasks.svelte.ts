@@ -1,11 +1,11 @@
 import { projectsStore } from './projects.svelte';
-import type { ITask, TTaskList, TProjectID } from '$types';
+import type { ITask, TTaskList, TProjectID, TTaskStatus } from '$types';
 
 const tasks = $state<TTaskList>([
 	{
 		id: 1,
 		idTask: 'B-1',
-		idStatus: '0',
+		idStatus: 'noStatus',
 		idProject: '1',
 		title: 'Исправить баг',
 		descr:
@@ -19,7 +19,7 @@ const tasks = $state<TTaskList>([
 	{
 		id: 2,
 		idTask: 'F-1',
-		idStatus: '0',
+		idStatus: 'noStatus',
 		idProject: '1',
 		title: 'Реализовать новую фичу',
 		descr:
@@ -33,7 +33,7 @@ const tasks = $state<TTaskList>([
 	{
 		id: 3,
 		idTask: 'T-1',
-		idStatus: '0',
+		idStatus: 'noStatus',
 		idProject: '1',
 		title: 'Простая таска. Ничего сложного.',
 		descr: '',
@@ -46,7 +46,7 @@ const tasks = $state<TTaskList>([
 	{
 		id: 4,
 		idTask: 'B-2',
-		idStatus: '0',
+		idStatus: 'noStatus',
 		idProject: '1',
 		title: 'Нашёл баг. Нет, не так... НАШЁЛ БАГ!!1',
 		descr: 'Описания не будет. Баг просто есть. Его не может не быть. Нужно найти и исправить.',
@@ -59,7 +59,7 @@ const tasks = $state<TTaskList>([
 	{
 		id: 5,
 		idTask: 'B-3',
-		idStatus: '0',
+		idStatus: 'noStatus',
 		idProject: '1',
 		title: 'Ещё один баг',
 		descr: 'Не кажется ли Вам, товарищ разработчик, что багов в Вашей поделке слишком много?',
@@ -72,7 +72,7 @@ const tasks = $state<TTaskList>([
 	{
 		id: 6,
 		idTask: 'F-2',
-		idStatus: '1',
+		idStatus: 'sprint',
 		idProject: '1',
 		title: 'Фича в спринте',
 		descr: 'Какая-то фича в графе "Спринт".',
@@ -85,7 +85,7 @@ const tasks = $state<TTaskList>([
 	{
 		id: 7,
 		idTask: 'B-4',
-		idStatus: '2',
+		idStatus: 'inProgress',
 		idProject: '1',
 		title: 'Баг в работе',
 		descr: 'Исправление какого-то бага.',
@@ -98,7 +98,7 @@ const tasks = $state<TTaskList>([
 	{
 		id: 8,
 		idTask: 'T-2',
-		idStatus: '3',
+		idStatus: 'test',
 		idProject: '1',
 		title: 'Задача на тесте',
 		descr: 'Просто задача на тесте.',
@@ -140,7 +140,7 @@ export function getTaskById(id: number): ITask | null {
  * @param idProject Идентификатор проекта (опционально).
  * @returns Массив с задачами.
  */
-export function getTasksByIdStatus(idStatus: string, idProject?: TProjectID) {
+export function getTasksByIdStatus(idStatus: TTaskStatus, idProject?: TProjectID) {
 	if (!idStatus) {
 		return [];
 	}
