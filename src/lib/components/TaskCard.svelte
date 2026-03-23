@@ -1,16 +1,35 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
+  import { TASK_TYPE } from '$constants';
 	import type { TTaskCard } from '$types';
 
   let props: TTaskCard = $props();
 
-  let clType = $derived(props.type ? ` task-card_type_${props.type}` : '')
   let clUrgent = $derived(props.urgent ? ' task-card_urgent' : '')
   let clMinimize = $derived(props.minimize ? ' task-card_minimize' : '')
-  let cl = $derived(`task-card${clType}${clUrgent}${clMinimize}`)
+  let cl = $derived(`task-card${clUrgent}${clMinimize}`)
+
+  const handleClick = () => {
+    props.onclick?.()
+  }
+
+  function handleKeyboard(event: KeyboardEvent) {
+    if (['Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
+      event.preventDefault();
+
+      handleClick()
+    }
+  }
 </script>
 
-<div class="{cl}">
+<div
+  class="{cl}"
+  style:--type-color={TASK_TYPE[props.type].color}
+  role="button"
+  tabindex="0"
+  onclick={handleClick}
+  onkeydown={handleKeyboard}
+>
   <div class="task-card__header">
     <span class="task-card__id">#{ props.idTask }</span>
     {#if !props.minimize}
@@ -45,6 +64,8 @@
     gap: var(--indent-half);
     transition: box-shadow var(--transition-base);
 
+    @mixin focus;
+
     &::before {
       content: '';
       position: absolute;
@@ -57,6 +78,8 @@
 
     &:hover {
       box-shadow: var(--shadow);
+      cursor: pointer;
+      user-select: none;
     }
 
     &_urgent {
@@ -79,21 +102,6 @@
         --icon-urgent-size: 2rem;
         top: var(--indent-half);
         right: var(--indent-half);
-      }
-    }
-
-    &_type {
-
-      &_bug {
-        --type-color: var(--color-danger);
-      }
-
-      &_feature {
-        --type-color: var(--color-secondary);
-      }
-
-      &_task {
-        --type-color: var(--color-border);
       }
     }
 
