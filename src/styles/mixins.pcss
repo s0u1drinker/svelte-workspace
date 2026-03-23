@@ -1,0 +1,25 @@
+@define-mixin focus $color: var(--color-primary) {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--color-white),
+      0 0 0 4px $color;
+  }
+}
+
+@define-mixin hover {
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      @mixin-content;
+    }
+  }
+
+  @media (hover: none) {
+    &:active:not(:disabled) {
+      @mixin-content;
+    }
+  }
+}
