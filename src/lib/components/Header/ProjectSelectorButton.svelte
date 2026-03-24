@@ -24,23 +24,30 @@
     &::before,
     &::after {
       position: absolute;
-      width: 1rem;
-      height: 1rem;
+      width: 1.5rem;
+      height: 1.5rem;
       color: var(--gray);
       transition: color var(--transition-base), transform var(--transition-base);
-      transform-origin: bottom center;
     }
 
     &::before {
-      content: "<";
+      content: "";
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M18.41 7.41L17 6l-6 6l6 6l1.41-1.41L13.83 12zm-6 0L11 6l-6 6l6 6l1.41-1.41L7.83 12z'/%3E%3C/svg%3E");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      background-color: currentColor;
       left: -1rem;
-      top: 0;
+      top: 10%;
     }
 
     &::after {
-      content: ">";
+      content: "";
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M5.59 7.41L7 6l6 6l-6 6l-1.41-1.41L10.17 12zm6 0L13 6l6 6l-6 6l-1.41-1.41L16.17 12z'/%3E%3C/svg%3E");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      background-color: currentColor;
       right: -1rem;
-      top: 0;
+      top: 10%;
     }
 
     &:hover {
