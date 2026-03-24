@@ -105,7 +105,7 @@
     {#snippet buttons()}
       {#each Object.entries(modalButtons) as [key, button] (`modal-button-${key}`)}
         {#if !button?.statusToShow || button.statusToShow.includes(taskData.idStatus)}
-          <Button {...button} />
+          <Button {...button} elevated />
         {/if}
       {/each}
     {/snippet}

@@ -1,8 +1,10 @@
 <script lang="ts">
+  import Icon from '@iconify/svelte';
   import type { IButton } from '$types'
 
   let { title, buttonStyle = 'primary', ...props }: IButton = $props();
-  let style = $derived(buttonStyle ? `button_${buttonStyle}` : '');
+  let style = $derived(props?.outline ? `button_outline button_outline_${buttonStyle}` : `button_${buttonStyle}`)
+  let shadow = $derived(props?.elevated && 'button_elevated' )
 
   const handleCLick = () => {
     props?.onClick && props.onClick()
@@ -11,10 +13,13 @@
 
 <button
   type="button"
-  class={['button', props.class, style]}
+  class={['button', props.class, style, shadow]}
   onclick={handleCLick}
 >
-  {title}
+  {#if props.icon}
+    <Icon icon={props.icon} />
+  {/if}
+  <span>{title}</span>
 </button>
 
 <style lang="postcss">
@@ -23,20 +28,25 @@
 
     background-color: var(--button-color);
     color: var(--color-white);
-    padding: var(--indent-half) var(--indent);
+    padding: var(--indent-half) var(--indent-three-quarters);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
     transition:
       background-color var(--transition-base),
       color var(--transition-base), 
       transform var(--transition-fast);
 
-    @mixin hover {
-      background-color: hsl(from var(--button-color) h s calc(l - 10));
+    &:not(.button_outline) {
+      @mixin hover {
+        background-color: hsl(from var(--button-color) h s calc(l - 10));
+      }
     }
 
     &:active {
       transform: scale(.95);
+    }
+
+    &_elevated {
+      box-shadow: var(--shadow-sm);
     }
 
     &_primary {
@@ -59,6 +69,41 @@
       --button-color: var(--color-border);
 
       color: inherit;
+    }
+
+    &_outline {
+      --outline-bg-color: transparent;
+      --outline-txt-color: inherit;
+
+      background-color: var(--outline-bg-color);
+      color: var(--outline-txt-color);
+      border: 1px solid var(--outline-txt-color);
+
+      @mixin hover {
+        --outline-bg-color: var(--outline-txt-color);
+
+        color: var(--color-white);
+      }
+
+      &_primary {
+        --outline-txt-color: var(--color-primary);
+      }
+
+      &_secondary{
+        --outline-txt-color: var(--color-secondary);
+      }
+      
+      &_danger{
+        --outline-txt-color: var(--color-danger);
+      }
+      
+      &_success{
+        --outline-txt-color: var(--color-success);
+      }
+      
+      &_gray{
+        --outline-txt-color: var(--gray);
+      }
     }
   }
 </style>

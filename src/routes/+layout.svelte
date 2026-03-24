@@ -11,7 +11,7 @@
 
 <style lang="postcss">
   :root {
-    --header-height: 6.5rem;
+    --header-height: 7.25rem;
   }
 
   main {
