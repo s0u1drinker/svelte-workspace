@@ -82,7 +82,7 @@
       }
 
       &[disabled] {
-        background: var(--color-border);
+        background: var(--lightgray);
         
         &:hover {
           cursor: not-allowed;
