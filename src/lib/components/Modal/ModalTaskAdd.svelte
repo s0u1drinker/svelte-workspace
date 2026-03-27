@@ -1,5 +1,6 @@
 <script lang="ts">
   import Modal from "./Modal.svelte";
+  import { projectsStore } from "$stores/projects.svelte";
   import Button from "$components/Button.svelte";
 	import FormNewTask from "$components/Form/FormNewTask.svelte";
   import { FORM_ID, FORM_STATUS } from "$constants";
@@ -45,7 +46,7 @@
   onClose={clearForm}
 >
   {#snippet header()}
-    <h3>Новая задача</h3>
+    <h3>Новая задача<br/>для &laquo;{projectsStore.currentProjectName}&raquo;</h3>
   {/snippet}
 
   <div class="modal-new-task__form">

@@ -6,6 +6,7 @@
   class="logo"
   href="https://github.com/s0u1drinker/svelte-workspace"
   target="_blank"
+  rel="noopener noreferrer"
 >
   <img class="logo__svg" src="{icon}" alt="">
   <span>velte Workspace</span>
