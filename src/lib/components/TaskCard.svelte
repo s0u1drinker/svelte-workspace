@@ -1,6 +1,7 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
   import { TASK_TYPE } from '$constants';
+  import { convertDateToString } from "$lib/utils"; 
 	import type { TTaskCard } from '$types';
 
   let props: TTaskCard = $props();
@@ -8,6 +9,9 @@
   let clUrgent = $derived(props.urgent ? ' task-card_urgent' : '')
   let clMinimize = $derived(props.minimize ? ' task-card_minimize' : '')
   let cl = $derived(`task-card${clUrgent}${clMinimize}`)
+
+  let created = $derived(convertDateToString(props.created));
+  let deadline = $derived(props.deadline ? convertDateToString(props.deadline, 'date') : '-');
 
   const handleClick = () => {
     props.onclick?.()
@@ -33,12 +37,12 @@
   <div class="task-card__header">
     <span class="task-card__id">#{ props.idTask }</span>
     {#if !props.minimize}
-      <span class="task-card__date">{ props.created }</span>
+      <span class="task-card__date">{ created }</span>
     {/if}
   </div>
-  <span class="task-card__title">{ props.title }</span>
+  <span class="task-card__title">{ props.subject }</span>
   {#if !props.minimize}
-    <div class="task-card__deadline">Выполнить до: { props.deadline }</div>
+    <div class="task-card__deadline">Выполнить до: { deadline }</div>
   {/if}
   {#if props.urgent}
     <Icon

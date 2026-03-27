@@ -1,6 +1,7 @@
 <script lang="ts">
   import Modal from "./Modal.svelte";
   import Button from '$components/Button.svelte'
+  import { BUTTON_STYLE } from "$constants";
   import type { IModalText } from "$types";
 
   let {
@@ -8,7 +9,7 @@
     title = 'Ошибка',
     text = 'Произошла непредвиденная ошибка.',
     buttonText = 'Закрыть',
-    buttonStyle = 'primary',
+    buttonStyle = BUTTON_STYLE.primary,
     buttons: modalButtons
   }: IModalText = $props();
 
@@ -28,7 +29,12 @@
     {#if modalButtons}
       {@render modalButtons()}
     {/if}
-    <Button title={buttonText} {buttonStyle} onClick={() => closeModal()} />
+    <Button
+      title={buttonText}
+      {buttonStyle}
+      onClick={() => closeModal()}
+      elevated
+    />
   {/snippet}
 </Modal>
 

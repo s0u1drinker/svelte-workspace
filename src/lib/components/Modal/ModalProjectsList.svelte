@@ -72,10 +72,10 @@
         --item-border: conic-gradient(
           from var(--angle),
           var(--color-border) 20%,
-          var(--gray) 30%,
+          var(--color-black) 30%,
           var(--color-border) 40%,
           var(--color-border) 70%,
-          var(--gray) 80%,
+          var(--color-black) 80%,
           var(--color-border) 90%
         );
         animation-play-state: running;

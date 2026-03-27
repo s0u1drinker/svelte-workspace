@@ -1,8 +1,14 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
+  import { BUTTON_STYLE } from '$constants';
   import type { IButton } from '$types'
 
-  let { title, buttonStyle = 'primary', ...props }: IButton = $props();
+  let {
+    title,
+    buttonStyle = BUTTON_STYLE.primary,
+    type: buttonType = 'button',
+    ...props
+  }: IButton = $props();
   let style = $derived(props?.outline ? `button_outline button_outline_${buttonStyle}` : `button_${buttonStyle}`)
   let shadow = $derived(props?.elevated && 'button_elevated' )
 
@@ -12,9 +18,11 @@
 </script>
 
 <button
-  type="button"
+  type={buttonType}
   class={['button', props.class, style, shadow]}
+  form={props?.form}
   onclick={handleCLick}
+  disabled={props.disabled}
 >
   {#if props.icon}
     <Icon icon={props.icon} />
@@ -35,13 +43,20 @@
       color var(--transition-base), 
       transform var(--transition-fast);
 
+    @mixin focus;
+
+    &[disabled] {
+      opacity: .75;
+      cursor: not-allowed;
+    }
+
     &:not(.button_outline) {
       @mixin hover {
         background-color: hsl(from var(--button-color) h s calc(l - 10));
       }
     }
 
-    &:active {
+    &:active:not[disabled] {
       transform: scale(.95);
     }
 

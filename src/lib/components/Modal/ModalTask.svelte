@@ -4,7 +4,7 @@
   import Button from "$components/Button.svelte";
   import Icon from "@iconify/svelte";
   import { getTaskById } from "$stores/tasks.svelte";
-  import { getTaskStatusByID } from "$lib/utils";
+  import { getTaskStatusByID, convertDateToString } from "$lib/utils";
   import { TASK_TYPE, TASK_STATUS, TASK_BUTTONS, BUTTON_STYLE } from "$constants";
   import type { IModalTask, TTaskModalButtons, TTaskStatus } from '$types'
 
@@ -51,7 +51,9 @@
   });
   let taskData = $derived(getTaskById(idTask))
   let taskColor = $derived(taskData?.type ? TASK_TYPE[taskData.type].color : 'var(--color-border)')
-  let taskStatus = $derived(taskData?.idStatus ? getTaskStatusByID(taskData.idStatus) : '-')
+  let taskStatus = $derived(taskData?.status ? getTaskStatusByID(taskData.status) : '-')
+  let taskCreated = $derived(taskData?.created ? convertDateToString(taskData.created) : '-');
+  let taskDeadline = $derived(taskData?.deadline ? convertDateToString(taskData.deadline, 'date') : '-');
 
   const closeModal = () => open = false
   /**
@@ -61,7 +63,7 @@
    */
   const changeStatusTo = (status: TTaskStatus, close: boolean = true): void => {
     if (taskData) {
-      taskData.idStatus = status
+      taskData.status = status
 
       if (close) {
         closeModal()
@@ -77,14 +79,14 @@
     class="modal-task"
   >
     {#snippet header()}
-      <h3><span style:color={taskData.urgent ? 'var(--color-danger)' : 'var(--color-primary)'}>{`#${taskData.idTask}`}</span> {taskData.title}</h3>
+      <h3><span style:color={taskData.urgent ? 'var(--color-danger)' : 'var(--color-primary)'}>{`#${taskData.idTask}`}</span> {taskData.subject}</h3>
     {/snippet}
 
     <div class="modal-task__info">
-      <span class="modal-task__created">{taskData.created}</span>
+      <span class="modal-task__created">{taskCreated}</span>
       <span class="modal-task__status">{taskStatus}</span>
     </div>
-    <div class="modal-task__descr">{taskData.descr}</div>
+    <div class="modal-task__descr">{taskData.description}</div>
 
     <div class="modal-task__item">
       <span class="modal-task__label">Тип задачи:</span>
@@ -93,7 +95,7 @@
     </div>
     <div class="modal-task__item">
       <span class="modal-task__label">Выполнить до:</span>
-      {taskData.deadline}
+      {taskDeadline}
     </div>
     {#if taskData.urgent}
       <Icon
@@ -104,7 +106,7 @@
 
     {#snippet buttons()}
       {#each Object.entries(modalButtons) as [key, button] (`modal-button-${key}`)}
-        {#if !button?.statusToShow || button.statusToShow.includes(taskData.idStatus)}
+        {#if !button?.statusToShow || button.statusToShow.includes(taskData.status)}
           <Button {...button} elevated />
         {/if}
       {/each}

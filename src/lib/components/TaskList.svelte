@@ -46,7 +46,7 @@
 
     position: relative;
     overflow-y: auto;
-    scrollbar-color: var(--gray) var(--color-border);
+    scrollbar-color: var(--gray) var(--lightgray);
     scrollbar-width: thin;
     height: 100%;
 
