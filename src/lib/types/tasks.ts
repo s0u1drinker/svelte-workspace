@@ -1,4 +1,4 @@
-import { TASK_TYPE, TASK_STATUS, TASK_BUTTONS } from '$constants';
+import { TASK_TYPE, TASK_STATUS, TASK_BUTTONS, FORM_STATUS } from '$constants';
 import type { TButtonStyle } from './button';
 import type { TProjectID } from './projects';
 
@@ -12,15 +12,14 @@ export type TTaskId = `${(typeof TASK_TYPE)[TTaskType]['prefix']}-${number}`;
 export interface ITask {
 	id: number;
 	idTask: TTaskId;
-	idStatus: TTaskStatus;
 	idProject: TProjectID;
-	title: string;
-	descr: string;
+	subject: string;
+	description: string;
 	type: TTaskType;
-	urgent: boolean;
-	ownerName: string;
-	created: string;
 	deadline: string;
+	status: TTaskStatus;
+	urgent: boolean;
+	created: string;
 }
 
 /** Комопнент для отображдения списка задач. */
@@ -55,3 +54,20 @@ export type TTaskModalButtons = {
 		statusToShow?: TTaskStatus[];
 	};
 };
+
+export interface ITaskFormDataPayload {
+	formStatus: typeof FORM_STATUS.success;
+	subject: string;
+	description: string;
+	type: TTaskType;
+	deadline: string;
+	status: TTaskStatus;
+	urgent: boolean;
+}
+
+export interface ITaskFormDataError {
+	formStatus: typeof FORM_STATUS.error;
+	error: string;
+}
+
+export type TTaskFormData = ITaskFormDataPayload | ITaskFormDataError;

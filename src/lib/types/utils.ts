@@ -1,3 +1,12 @@
+/** Тип для выпадающего меню. */
+export interface ISelectData {
+	title: string;
+	value: string;
+}
+
+/** Параметры для возврата: дата + время, дата, время. */
+export type TDateParts = 'datetime' | 'date' | 'time';
+
 /** Тип для имени иконки. */
 export type TIconName = `${any}${string}:${any}${string}`;
 

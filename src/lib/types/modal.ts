@@ -31,3 +31,4 @@ export type IModalProjects = Pick<IModal, 'open'>;
 export type IModalTask = Pick<IModal, 'open'> & {
 	idTask: number;
 };
+export type IModalTaskAdd = Pick<IModal, 'open'>;
