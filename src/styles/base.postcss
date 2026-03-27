@@ -64,9 +64,58 @@ ul {
   list-style: none;
 }
 
+textarea {
+  resize: none;
+  padding: var(--indent-half);
+}
+
+input {
+  padding: var(--indent-half);
+}
+
+input[type="checkbox"] {
+  accent-color: var(--color-primary);
+  width: 1rem;
+  height: 1rem;
+}
+
+select {
+  padding: 6px;
+}
+
+input,
+select,
+textarea {
+  @mixin focus;
+}
+
 .color {
 
   &_danger {
     color: var(--color-danger);
+  }
+}
+
+.input {
+  border: var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+}
+
+.form {
+  display: grid;
+  grid-template-rows: auto;
+
+  &__item {
+    display: flex;
+    padding: var(--indent) 0;
+    gap: var(--indent-half);
+    align-items: flex-start;
+  }
+  
+  &__label {
+    flex-shrink: 0;
+    width: 10rem;
+    padding-top: .4rem;
   }
 }
