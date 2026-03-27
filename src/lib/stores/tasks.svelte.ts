@@ -1,118 +1,151 @@
+import { SvelteDate } from 'svelte/reactivity';
 import { projectsStore } from './projects.svelte';
-import type { ITask, TTaskList, TProjectID, TTaskStatus } from '$types';
+import { TASK_TYPE } from '$constants';
+import type {
+	ITask,
+	ITaskFormDataPayload,
+	TTaskList,
+	TProjectID,
+	TTaskStatus,
+	TTaskType,
+	TTaskId
+} from '$types';
 
 const tasks = $state<TTaskList>([
 	{
 		id: 1,
 		idTask: 'B-1',
-		idStatus: 'noStatus',
+		status: 'noStatus',
 		idProject: '1',
-		title: 'Исправить баг',
-		descr:
+		subject: 'Исправить баг',
+		description:
 			'Баг появляется и исчезает внезапно. Никто не может его воспроизвести, т.к. никто не знает из-за чего он появляется.',
 		type: 'bug',
 		urgent: false,
-		ownerName: 'Дмитрий',
-		created: '12.03.2026 10:10',
-		deadline: '16.03.2026'
+		created: '2026-03-12T06:59:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	},
 	{
 		id: 2,
 		idTask: 'F-1',
-		idStatus: 'noStatus',
+		status: 'noStatus',
 		idProject: '1',
-		title: 'Реализовать новую фичу',
-		descr:
+		subject: 'Реализовать новую фичу',
+		description:
 			'Нужно реализовать мега-крутую, просто феерически невообразимую новую фичу. Срок: 1 час.',
 		type: 'feature',
 		urgent: true,
-		ownerName: 'Дмитрий',
-		created: '12.03.2026 10:11',
-		deadline: '16.03.2026'
+		created: '2026-03-12T07:59:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	},
 	{
 		id: 3,
 		idTask: 'T-1',
-		idStatus: 'noStatus',
+		status: 'noStatus',
 		idProject: '1',
-		title: 'Простая таска. Ничего сложного.',
-		descr: '',
+		subject: 'Простая таска. Ничего сложного.',
+		description: '',
 		type: 'task',
 		urgent: false,
-		ownerName: 'Дмитрий',
-		created: '12.03.2026 10:12',
-		deadline: '16.03.2026'
+		created: '2026-03-12T08:03:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	},
 	{
 		id: 4,
 		idTask: 'B-2',
-		idStatus: 'noStatus',
+		status: 'noStatus',
 		idProject: '1',
-		title: 'Нашёл баг. Нет, не так... НАШЁЛ БАГ!!1',
-		descr: 'Описания не будет. Баг просто есть. Его не может не быть. Нужно найти и исправить.',
+		subject: 'Нашёл баг. Нет, не так... НАШЁЛ БАГ!!1',
+		description:
+			'Описания не будет. Баг просто есть. Его не может не быть. Нужно найти и исправить.',
 		type: 'bug',
 		urgent: true,
-		ownerName: 'Дмитрий',
-		created: '12.03.2026 10:13',
-		deadline: '16.03.2026'
+		created: '2026-03-12T08:05:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	},
 	{
 		id: 5,
 		idTask: 'B-3',
-		idStatus: 'noStatus',
+		status: 'noStatus',
 		idProject: '1',
-		title: 'Ещё один баг',
-		descr: 'Не кажется ли Вам, товарищ разработчик, что багов в Вашей поделке слишком много?',
+		subject: 'Ещё один баг',
+		description: 'Не кажется ли Вам, товарищ разработчик, что багов в Вашей поделке слишком много?',
 		type: 'bug',
 		urgent: false,
-		ownerName: 'Дмитрий',
-		created: '12.03.2026 10:14',
-		deadline: '16.03.2026'
+		created: '2026-03-12T08:09:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	},
 	{
 		id: 6,
 		idTask: 'F-2',
-		idStatus: 'sprint',
+		status: 'sprint',
 		idProject: '1',
-		title: 'Фича в спринте',
-		descr: 'Какая-то фича в графе "Спринт".',
+		subject: 'Фича в спринте',
+		description: 'Какая-то фича в графе "Спринт".',
 		type: 'feature',
 		urgent: true,
-		ownerName: 'Дмитрий',
-		created: '16.03.2026 18:35',
-		deadline: '20.03.2026'
+		created: '2026-03-16T15:35:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	},
 	{
 		id: 7,
 		idTask: 'B-4',
-		idStatus: 'inProgress',
+		status: 'inProgress',
 		idProject: '1',
-		title: 'Баг в работе',
-		descr: 'Исправление какого-то бага.',
+		subject: 'Баг в работе',
+		description: 'Исправление какого-то бага.',
 		type: 'bug',
 		urgent: false,
-		ownerName: 'Дмитрий',
-		created: '16.03.2026 19:02',
-		deadline: '20.03.2026'
+		created: '2026-03-16T16:02:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	},
 	{
 		id: 8,
 		idTask: 'T-2',
-		idStatus: 'test',
+		status: 'test',
 		idProject: '1',
-		title: 'Задача на тесте',
-		descr: 'Просто задача на тесте.',
+		subject: 'Задача на тесте',
+		description: 'Просто задача на тесте.',
 		type: 'task',
 		urgent: false,
-		ownerName: 'Дмитрий',
-		created: '16.03.2026 19:03',
-		deadline: '20.03.2026'
+		created: '2026-03-16T16:04:24.391Z',
+		deadline: '2026-03-31T21:00:00.000Z'
 	}
 ]);
 
+/**
+ * Генерирует новый идентификатор для задачи с переданным типом.
+ * @param taskType Тип задачи.
+ * @returns Идентификатор задачи.
+ */
+function generateNewIDTask(taskType: TTaskType): TTaskId {
+	const count: number = tasks.filter((task) => task.type === taskType).length + 1;
+
+	return `${TASK_TYPE[taskType].prefix}-${count}`;
+}
+
 /** Добавить новую задачу. */
-export function addTask(newTask: ITask) {
-	tasks.push(newTask);
+export function addTask(taskData: ITaskFormDataPayload): boolean {
+	const idProject = projectsStore.currentProjectID;
+
+	if (idProject) {
+		const deadline = taskData.deadline ? new SvelteDate(taskData.deadline).toISOString() : '';
+		const created = new SvelteDate().toISOString();
+		const newTask: ITask = {
+			...taskData,
+			deadline,
+			id: tasks.length + 1,
+			idTask: generateNewIDTask(taskData.type),
+			idProject,
+			created
+		};
+
+		tasks.push(newTask);
+
+		return true;
+	}
+
+	return false;
 }
 
 /** Обновить существуюшую задачу по id. */
@@ -147,7 +180,5 @@ export function getTasksByIdStatus(idStatus: TTaskStatus, idProject?: TProjectID
 
 	const idProjectForFilter = idProject ?? projectsStore.currentProjectID;
 
-	return tasks.filter(
-		(task) => task.idStatus === idStatus && task.idProject === idProjectForFilter
-	);
+	return tasks.filter((task) => task.status === idStatus && task.idProject === idProjectForFilter);
 }
