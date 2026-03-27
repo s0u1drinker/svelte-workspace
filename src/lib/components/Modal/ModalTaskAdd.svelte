@@ -46,7 +46,7 @@
   onClose={clearForm}
 >
   {#snippet header()}
-    <h3>Новая задача<br/>для &laquo;{projectsStore.currentProjectName}&raquo;</h3>
+    <h3 class="modal-new-task__header">Новая задача для &laquo;{projectsStore.currentProjectName}&raquo;</h3>
   {/snippet}
 
   <div class="modal-new-task__form">
@@ -88,6 +88,10 @@
   .modal-new-task {
     :global(&) {
       width: 32rem;
+    }
+
+    &__header {
+      text-align: center;
     }
     
     &__form {
