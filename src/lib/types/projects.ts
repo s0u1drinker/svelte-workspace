@@ -6,7 +6,11 @@ export interface IProject {
 	name: string;
 	description: string;
 	icon: string;
+	order: number;
 }
 
+/** Проект в БД. */
+export type TProjectInDB = Omit<IProject, 'id'>;
+
 /** Список проектов. */
-export type IProjectsMap = Record<string, IProject>;
+export type IProjectsMap = Record<TProjectID, IProject>;

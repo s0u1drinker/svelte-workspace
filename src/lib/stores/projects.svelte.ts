@@ -1,21 +1,15 @@
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { db } from '$lib/firebase/client';
+import { projectConverter } from '$lib/firebase/converters';
+import type { Unsubscribe } from 'firebase/firestore';
 import type { IProject, TProjectID, IProjectsMap } from '$types';
 
 class ProjectsStore {
 	/** Список проектов. */
-	private _projects = $state<IProjectsMap>({
-		'1': {
-			id: '1',
-			name: 'Nuxt runner',
-			description: 'Приложение для учёта беговых тренировок.',
-			icon: 'logos:nuxt-icon'
-		},
-		'2': {
-			id: '2',
-			name: 'Svelte Workspace',
-			description: 'Приложение для управления задачами.',
-			icon: 'logos:svelte-icon'
-		}
-	});
+	private _projects = $state<IProjectsMap>({});
+
+	/** Функция для отписки от Firebase Snapshot Listener. */
+	private _unsubscribeFromProjects: Unsubscribe | null = null;
 
 	/** Текущий проект. */
 	private currentProject = $state<IProject | null>(null);
@@ -39,9 +33,42 @@ class ProjectsStore {
 		return !!this.currentProjectID;
 	}
 
-	/** Добавить данные о проектах. */
-	setProjects(newData: IProjectsMap) {
-		this._projects = { ...newData };
+	/** Загрузка проектов из Firestore, а также подписка на изменения в коллекции 'projects'. */
+	loadProjectsFromFirebase() {
+		if (this._unsubscribeFromProjects) {
+			this._unsubscribeFromProjects();
+			this._unsubscribeFromProjects = null;
+		}
+
+		const projectsCollectionRef = collection(db, 'projects').withConverter(projectConverter);
+
+		this._unsubscribeFromProjects = onSnapshot(
+			query(projectsCollectionRef, orderBy('order', 'asc')),
+			(querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					const project = doc.data();
+
+					this._projects[doc.id] = project;
+				});
+
+				// TODO: обновление данных для currrentProject.
+			},
+			(error) => {
+				console.error('[projectsStore] Ошибка при получении проектов из Firebase:', error);
+			}
+		);
+	}
+
+	/**
+	 * Отписывается от Firebase Snapshot Listener.
+	 * Следует вызывать при уничтожении компонента/области, которая инициировала загрузку.
+	 */
+	unsubscribeFromFirebase() {
+		if (this._unsubscribeFromProjects) {
+			this._unsubscribeFromProjects();
+			this._unsubscribeFromProjects = null;
+			console.log('Отписка от Firebase Projects Listener.');
+		}
 	}
 
 	/**
