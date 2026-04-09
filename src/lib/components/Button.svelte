@@ -46,7 +46,7 @@
     @mixin focus;
 
     &[disabled] {
-      opacity: .75;
+      opacity: .5;
       cursor: not-allowed;
     }
 

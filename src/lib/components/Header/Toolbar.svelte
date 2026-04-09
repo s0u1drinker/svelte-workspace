@@ -16,7 +16,7 @@
 <div class="toolbar">
   <Button
     title="Добавить задачу"
-    buttonStyle={BUTTON_STYLE.gray}
+    buttonStyle={BUTTON_STYLE.primary}
     icon="mdi:add"
     outline
     onClick={() => open = true}
