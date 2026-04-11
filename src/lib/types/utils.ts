@@ -4,6 +4,8 @@ export interface ISelectData {
 	value: string;
 }
 
+export type TSelectDataArray = ISelectData[];
+
 /** Параметры для возврата: дата + время, дата, время. */
 export type TDateParts = 'datetime' | 'date' | 'time';
 
@@ -14,3 +16,6 @@ export type TIconName = `${any}${string}:${any}${string}`;
 export type TCapitalzeFirstChar<S extends string> = S extends `${infer First}${string}`
 	? Uppercase<First>
 	: S;
+
+/** Тип для данных из БД. */
+export type TCollectionFromDB<T> = Omit<T, 'id'>;

@@ -59,15 +59,11 @@ class ProjectsStore {
 		);
 	}
 
-	/**
-	 * Отписывается от Firebase Snapshot Listener.
-	 * Следует вызывать при уничтожении компонента/области, которая инициировала загрузку.
-	 */
+	/** Отписывается от Firebase Snapshot Listener. */
 	unsubscribeFromFirebase() {
 		if (this._unsubscribeFromProjects) {
 			this._unsubscribeFromProjects();
 			this._unsubscribeFromProjects = null;
-			console.log('Отписка от Firebase Projects Listener.');
 		}
 	}
 

@@ -1,3 +1,5 @@
+import type { TCollectionFromDB } from '$types';
+
 export type TProjectID = string;
 
 /** Проект. */
@@ -10,7 +12,7 @@ export interface IProject {
 }
 
 /** Проект в БД. */
-export type TProjectInDB = Omit<IProject, 'id'>;
+export type TProjectFromDB = TCollectionFromDB<IProject>;
 
 /** Список проектов. */
 export type IProjectsMap = Record<TProjectID, IProject>;

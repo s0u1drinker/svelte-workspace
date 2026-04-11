@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
-  import { TASK_TYPE } from '$constants';
+  import { taskTypeStore } from "$stores/taskType.svelte";
   import { convertDateToString } from "$lib/utils"; 
 	import type { TTaskCard } from '$types';
 
@@ -12,6 +12,7 @@
 
   let created = $derived(convertDateToString(props.created));
   let deadline = $derived(props.deadline ? convertDateToString(props.deadline, 'date') : '-');
+  let color = $derived(taskTypeStore.getPropertyOfTypeById(props.type, 'color'));
 
   const handleClick = () => {
     props.onclick?.()
@@ -28,7 +29,7 @@
 
 <div
   class="{cl}"
-  style:--type-color={TASK_TYPE[props.type].color}
+  style:--type-color={color}
   role="button"
   tabindex="0"
   onclick={handleClick}

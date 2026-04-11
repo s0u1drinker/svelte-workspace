@@ -6,7 +6,7 @@
   import type { ITaskList } from '$types';
 
   const { titleStyle = 'border', ...props }: ITaskList = $props();
-  const tasks = $derived(getTasksByIdStatus(props.idStatus));
+  const tasks = $derived(props.idStatus ? getTasksByIdStatus(props.idStatus) : []);
 
   let open = $state<boolean>(false)
   let idTask = $state<number>(0);
@@ -38,7 +38,9 @@
   </div>
 </div>
 
-<ModalTask bind:open {idTask} />
+{#if idTask}
+  <ModalTask bind:open {idTask} />
+{/if}
 
 <style lang="postcss">
   .task-list {
