@@ -1,12 +1,12 @@
 <script lang="ts">
   import { FORM_ID, FORM_FIELD_NAME, FORM_STATUS, TASK_STATUS } from "$constants";
-  import { sanitizeString, getTasksStatusForSelect, getTaskTypeForSelect } from "$lib/utils";
+  import { sanitizeString, getTasksStatusForSelect, getTaskTypeForSelect, getLocaleISOString } from "$lib/utils";
   import type { TFormNewTask, ITaskFormDataPayload, ITaskFormDataError } from "$types";
 
   const ID = FORM_ID.newTask;
   const SUBJECT_NAME = FORM_FIELD_NAME[ID].subject
   const DESCRIPTION_NAME = FORM_FIELD_NAME[ID].description
-  const MIN_DATE = new Date().toISOString().split('T')[0]
+  const MIN_DATE = getLocaleISOString()
   const INITIAL_DATA: ITaskFormDataPayload = {
     formStatus: FORM_STATUS.success,
     subject: '',
@@ -66,7 +66,7 @@
       subject,
       description,
       type: formData.type,
-      deadline: formData.deadline && `${formData.deadline}, 00:00:00`,
+      deadline: formData.deadline && new Date(formData.deadline).toISOString(),
       status: formData.status,
       urgent: formData.urgent,
     });
@@ -127,7 +127,7 @@
     <span class="form__label">Выполнить до</span>
     <input
       class="input"
-      type="date"
+      type="datetime-local"
       min={MIN_DATE}
       bind:value={formData.deadline}
     />

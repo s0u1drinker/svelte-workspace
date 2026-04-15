@@ -3,10 +3,12 @@
   import ModalText from './ModalText.svelte'
   import Button from "$components/Button.svelte";
   import Icon from "@iconify/svelte";
-  import { getTaskById } from "$stores/tasks.svelte";
+  import { getTaskById, updateTask } from "$stores/tasks.svelte";
   import { getTaskStatusByID, convertDateToString } from "$lib/utils";
   import { TASK_TYPE, TASK_STATUS, TASK_BUTTONS, BUTTON_STYLE } from "$constants";
   import type { IModalTask, TTaskModalButtons, TTaskStatus } from '$types'
+	import TaskTypeIndicator from "$components/TaskTypeIndicator.svelte";
+	import DeadlineIndicator from "$components/DeadlineIndicator.svelte";
 
   let { open = $bindable(false), idTask }: IModalTask = $props();
   let modalButtons = $state<TTaskModalButtons>({
@@ -41,7 +43,7 @@
       title: TASK_BUTTONS.done,
       buttonStyle: BUTTON_STYLE.success,
       statusToShow: [TASK_STATUS.test.id],
-      onClick: () => changeStatusTo(TASK_STATUS.complete.id)
+      onClick: () => finishTask(idTask)
     },
     close: {
       title: TASK_BUTTONS.close,
@@ -50,10 +52,10 @@
     },
   });
   let taskData = $derived(getTaskById(idTask))
-  let taskColor = $derived(taskData?.type ? TASK_TYPE[taskData.type].color : 'var(--color-border)')
   let taskStatus = $derived(taskData?.status ? getTaskStatusByID(taskData.status) : '-')
   let taskCreated = $derived(taskData?.created ? convertDateToString(taskData.created) : '-');
-  let taskDeadline = $derived(taskData?.deadline ? convertDateToString(taskData.deadline, 'date') : '-');
+  let taskDeadline = $derived(taskData?.deadline ? convertDateToString(taskData.deadline) : '-');
+  let taskFinished = $derived(taskData?.finished ? convertDateToString(taskData.finished) : '-')
 
   const closeModal = () => open = false
   /**
@@ -69,6 +71,20 @@
         closeModal()
       }
     }
+  }
+
+  /**
+   * Перевод задачи в статус "Завершено".
+   * @param id Идентификатор задачи.
+   */
+  const finishTask = (id: number): void => {
+    changeStatusTo(TASK_STATUS.complete.id)
+
+    const fieldsToUpdate = {
+      finished: new Date().toISOString()
+    }
+    
+    updateTask(id, fieldsToUpdate)
   }
 </script>
 
@@ -90,13 +106,24 @@
 
     <div class="modal-task__item">
       <span class="modal-task__label">Тип задачи:</span>
-      <div class="modal-task__task-type-color" style:--task-type-color={taskColor}></div>
+      <TaskTypeIndicator taskType={taskData.type} />
       {TASK_TYPE[taskData.type].title}
     </div>
     <div class="modal-task__item">
       <span class="modal-task__label">Выполнить до:</span>
       {taskDeadline}
     </div>
+    {#if taskData.finished}
+      <div class="modal-task__item">
+        <span class="modal-task__label">Выполнено:</span>
+        {taskFinished}
+        <DeadlineIndicator
+          deadline={taskData.deadline}
+          finished={taskData.finished}
+          showDate={false}
+        />
+      </div>
+    {/if}
     {#if taskData.urgent}
       <Icon
         icon="mdi:fire"
@@ -158,6 +185,7 @@
     &__item {
       display: flex;
       align-items: center;
+      gap: var(--indent-half);
 
       & + & {
         margin-top: 1rem;
@@ -168,14 +196,6 @@
       display: inline-block;
       width: 8rem;
       text-decoration: underline;
-    }
-
-    &__task-type-color {
-      width: 1rem;
-      height: 1rem;
-      background-color: var(--task-type-color);
-      margin-right: .5rem;
-      border-radius: var(--radius-full);
     }
   }
 </style>

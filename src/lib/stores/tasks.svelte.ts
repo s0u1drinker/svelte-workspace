@@ -4,14 +4,14 @@ import { TASK_TYPE } from '$constants';
 import type {
 	ITask,
 	ITaskFormDataPayload,
-	TTaskList,
+	TaskList,
 	TProjectID,
 	TTaskStatus,
 	TTaskType,
 	TTaskId
 } from '$types';
 
-const tasks = $state<TTaskList>([
+const tasks = $state<TaskList>([
 	{
 		id: 1,
 		idTask: 'B-1',
@@ -23,7 +23,8 @@ const tasks = $state<TTaskList>([
 		type: 'bug',
 		urgent: false,
 		created: '2026-03-12T06:59:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
 	},
 	{
 		id: 2,
@@ -36,7 +37,8 @@ const tasks = $state<TTaskList>([
 		type: 'feature',
 		urgent: true,
 		created: '2026-03-12T07:59:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
 	},
 	{
 		id: 3,
@@ -48,7 +50,8 @@ const tasks = $state<TTaskList>([
 		type: 'task',
 		urgent: false,
 		created: '2026-03-12T08:03:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
 	},
 	{
 		id: 4,
@@ -61,7 +64,8 @@ const tasks = $state<TTaskList>([
 		type: 'bug',
 		urgent: true,
 		created: '2026-03-12T08:05:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
 	},
 	{
 		id: 5,
@@ -73,7 +77,8 @@ const tasks = $state<TTaskList>([
 		type: 'bug',
 		urgent: false,
 		created: '2026-03-12T08:09:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
 	},
 	{
 		id: 6,
@@ -85,7 +90,8 @@ const tasks = $state<TTaskList>([
 		type: 'feature',
 		urgent: true,
 		created: '2026-03-16T15:35:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
 	},
 	{
 		id: 7,
@@ -97,7 +103,8 @@ const tasks = $state<TTaskList>([
 		type: 'bug',
 		urgent: false,
 		created: '2026-03-16T16:02:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
 	},
 	{
 		id: 8,
@@ -109,7 +116,34 @@ const tasks = $state<TTaskList>([
 		type: 'task',
 		urgent: false,
 		created: '2026-03-16T16:04:24.391Z',
-		deadline: '2026-03-31T21:00:00.000Z'
+		deadline: '2026-03-31T21:00:00.000Z',
+		finished: ''
+	},
+	{
+		id: 9,
+		idTask: 'T-3',
+		status: 'complete',
+		idProject: '1',
+		subject: 'Задача завершена раньше дедлайна',
+		description: 'Задача была поставлена и успешно решена.',
+		type: 'task',
+		urgent: true,
+		created: '2026-04-11T16:04:24.391Z',
+		deadline: '2026-04-12T17:00:00.000Z',
+		finished: '2026-04-12T16:33:12.000Z'
+	},
+	{
+		id: 10,
+		idTask: 'F-3',
+		status: 'complete',
+		idProject: '1',
+		subject: 'Задача завершена позже дедлайна',
+		description: 'Задача была поставлена и успешно решена позже дедлайна. Плохо.',
+		type: 'feature',
+		urgent: false,
+		created: '2026-04-10T11:01:14.391Z',
+		deadline: '2026-04-12T19:00:00.000Z',
+		finished: '2026-04-13T23:17:45.000Z'
 	}
 ]);
 
@@ -137,7 +171,8 @@ export function addTask(taskData: ITaskFormDataPayload): boolean {
 			id: tasks.length + 1,
 			idTask: generateNewIDTask(taskData.type),
 			idProject,
-			created
+			created,
+			finished: ''
 		};
 
 		tasks.push(newTask);

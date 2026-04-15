@@ -3,7 +3,7 @@
   import { TASK_STATUS } from "$constants";
   import type { TTaskStatusList } from '$types'
 
-  const props: { class: string } = $props();
+  const { class: className = '' } = $props<{ class?: string }>();
   const columns: TTaskStatusList = [
     TASK_STATUS.sprint,
     TASK_STATUS.inProgress,
@@ -11,7 +11,7 @@
   ]
 </script>
 
-<div class="dashboard {props.class}">
+<div class={`dashboard ${className}`}>
   {#each columns as column (`column-status-${column.id}`)}
     <TaskList
       class="dashboard__column"
@@ -28,7 +28,7 @@
     border: var(--border);
     border-radius: var(--radius);
     grid-template-columns: repeat(3, 1fr);
-    width: 80%;
+    height: 100%;
     overflow: hidden;
 
     :global(.dashboard__column:not(:first-child)) {
