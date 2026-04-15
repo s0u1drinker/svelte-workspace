@@ -1,12 +1,15 @@
 :root {
   /* Цвета */
   --color-primary: #3b82f6;
+  --color-primary-30: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  --color-primary-20: color-mix(in srgb, var(--color-primary) 20%, transparent);
   --color-secondary: #7434b4;
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
   
   --color-white: #fff;
+  --color-white-50: color-mix(in srgb, var(--color-white) 50%, transparent);;
   --color-black: #000;
 
   --color-border: #bec5ce;
