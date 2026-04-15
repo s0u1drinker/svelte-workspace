@@ -20,6 +20,7 @@ export interface ITask {
 	status: TTaskStatus;
 	urgent: boolean;
 	created: string;
+	finished: string;
 }
 
 /** Комопнент для отображдения списка задач. */
@@ -38,7 +39,7 @@ export type TTaskCard = ITask & {
 };
 
 /** Список задач для хранилища. */
-export type TTaskList = ITask[];
+export type TaskList = ITask[];
 
 /** Идентификатор статуса задачи. */
 export type TTaskStatus = keyof typeof TASK_STATUS;
