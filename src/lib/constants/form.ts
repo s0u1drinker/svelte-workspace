@@ -1,5 +1,6 @@
 export const FORM_ID = {
-	newTask: 'form-new-task'
+	newTask: 'form-new-task',
+	login: 'login'
 } as const;
 
 export const FORM_FIELD_NAME = {
