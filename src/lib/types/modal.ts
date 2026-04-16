@@ -10,7 +10,7 @@ export interface IModal {
 	children?: Snippet;
 	buttons?: Snippet;
 	onClose?: () => void;
-	closable?: boolean;
+	showCloseButton?: boolean;
 	class?: string;
 	position?: TModalPosition;
 }
