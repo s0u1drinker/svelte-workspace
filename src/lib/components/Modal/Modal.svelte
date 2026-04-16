@@ -8,7 +8,7 @@
     children,
     buttons,
     onClose,
-    closable = true,
+    showCloseButton = true,
     class: className = '',
     position = 'center'
   }: IModal = $props();
@@ -56,7 +56,7 @@
   onclick={handleClick}
 >
   <div class="modal__content">
-    {#if closable}
+    {#if showCloseButton}
       <button
         type="button"
         class="modal__close"
