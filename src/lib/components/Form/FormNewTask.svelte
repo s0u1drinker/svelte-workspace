@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { FORM_ID, FORM_FIELD_NAME, FORM_STATUS, TASK_STATUS } from "$constants";
-  import { sanitizeString, getTasksStatusForSelect, getTaskTypeForSelect, getLocaleISOString } from "$lib/utils";
-  import type { TFormNewTask, ITaskFormDataPayload, ITaskFormDataError } from "$types";
+  import { FORM_ID, FORM_FIELD_NAME, FORM_STATUS } from "$constants";
+  import { taskTypeStore } from "$stores/taskType.svelte";
+  import { taskStatusStore } from "$stores/taskStatus.svelte";
+  import { sanitizeString, getLocaleISOString } from "$lib/utils";
+  import type { TFormNewTask, ITaskFormDataPayload, ITaskFormDataError, TTaskTypeID, TTaskStatusID } from "$types";
 
   const ID = FORM_ID.newTask;
   const SUBJECT_NAME = FORM_FIELD_NAME[ID].subject
@@ -11,9 +13,9 @@
     formStatus: FORM_STATUS.success,
     subject: '',
     description: '',
-    type: 'bug',
+    type: Object.keys(taskTypeStore.types)[0] as TTaskTypeID,
     deadline: '',
-    status: TASK_STATUS.noStatus.id,
+    status: taskStatusStore.getStatusForKey('noStatus')?.id as TTaskStatusID,
     urgent: false,
   }
 
@@ -24,8 +26,8 @@
     formStatus: FORM_STATUS.error,
     error: '',
   })
-  let status = $derived(getTasksStatusForSelect());
-  let taskTypes = $derived(getTaskTypeForSelect());
+  let status = $derived(taskStatusStore.getStatusesForSelect());
+  let taskTypes = $derived(taskTypeStore.getTypesForSelect());
 
   $effect(() => {
     const {subject, description} = formData;

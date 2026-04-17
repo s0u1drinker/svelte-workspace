@@ -29,6 +29,6 @@ export type IModalProjects = Pick<IModal, 'open'>;
 
 /** Модальное окно для задачи. */
 export type IModalTask = Pick<IModal, 'open'> & {
-	idTask: number;
+	idTask: string;
 };
 export type IModalTaskAdd = Pick<IModal, 'open'>;

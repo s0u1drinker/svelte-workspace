@@ -1,32 +1,35 @@
-import { TASK_TYPE, TASK_STATUS, TASK_BUTTONS, FORM_STATUS } from '$constants';
-import type { TButtonStyle } from './button';
-import type { TProjectID } from './projects';
-
-/** Тип задачи. */
-export type TTaskType = keyof typeof TASK_TYPE;
+import { TASK_BUTTONS, FORM_STATUS } from '$constants';
+import type { TButtonStyle, TTaskStatusID, ITaskType, TTaskTypeID } from '$types';
 
 /** Идентификатор задачи. */
-export type TTaskId = `${(typeof TASK_TYPE)[TTaskType]['prefix']}-${number}`;
+export type TTaskId = `${ITaskType['prefix']}-${number}`;
 
 /** Задача. */
 export interface ITask {
-	id: number;
+	id: string;
 	idTask: TTaskId;
-	idProject: TProjectID;
 	subject: string;
 	description: string;
-	type: TTaskType;
+	type: TTaskTypeID;
 	deadline: string;
-	status: TTaskStatus;
+	status: TTaskStatusID;
 	urgent: boolean;
 	created: string;
 	finished: string;
 }
 
+/** Счетчик задач. */
+export type TTaskCounter = Record<TTaskTypeID, number>;
+
+/** Документ в БД tasks/{idProject} */
+export interface ITaskDocDB {
+	counter: TTaskCounter;
+}
+
 /** Комопнент для отображдения списка задач. */
 export interface ITaskList {
 	listTitle: string;
-	idStatus: TTaskStatus;
+	idStatus: TTaskStatusID | null | undefined;
 	class?: string;
 	minimizeCard?: boolean;
 	noDataText?: string;
@@ -41,10 +44,6 @@ export type TTaskCard = ITask & {
 /** Список задач для хранилища. */
 export type TaskList = ITask[];
 
-/** Идентификатор статуса задачи. */
-export type TTaskStatus = keyof typeof TASK_STATUS;
-export type TTaskStatusList = (typeof TASK_STATUS)[TTaskStatus][];
-
 /** Кнопки в модальном окне. */
 export type TTaskButton = keyof typeof TASK_BUTTONS;
 export type TTaskModalButtons = {
@@ -52,7 +51,7 @@ export type TTaskModalButtons = {
 		title: string;
 		onClick: () => void;
 		buttonStyle?: TButtonStyle;
-		statusToShow?: TTaskStatus[];
+		statusToShow?: TTaskStatusID[];
 	};
 };
 
@@ -60,9 +59,9 @@ export interface ITaskFormDataPayload {
 	formStatus: typeof FORM_STATUS.success;
 	subject: string;
 	description: string;
-	type: TTaskType;
+	type: TTaskTypeID;
 	deadline: string;
-	status: TTaskStatus;
+	status: TTaskStatusID;
 	urgent: boolean;
 }
 

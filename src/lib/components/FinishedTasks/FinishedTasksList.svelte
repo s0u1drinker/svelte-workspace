@@ -3,7 +3,8 @@
 	import DeadlineIndicator from '$components/DeadlineIndicator.svelte';
 	import TaskTypeIndicator from '$components/TaskTypeIndicator.svelte';
   import ModalTask from '$components/Modal/ModalTask.svelte';
-  import { getTasksByIdStatus } from '$stores/tasks.svelte'
+  import { tasksStore } from '$stores/tasks.svelte'
+  import { taskStatusStore } from '$stores/taskStatus.svelte';
   import { DATE_FORMATTER } from '$constants';
   import { groupDataBy, getFormatDate, normalizeISODate, filterGroupedData, sortGroupedDataByGroup } from '$lib/utils';
   import type { IFilter } from '$types';
@@ -13,20 +14,20 @@
 
   let { filters = {} }: { filters: IFilter } = $props();
   let open = $state<boolean>(false)
-  let idTask = $state<number>(0);
-  let tasks = $derived(getTasksByIdStatus('complete'));
+  let idTask = $state<string>('');
+  let tasks = $derived(tasksStore.getTasksByIdStatus(taskStatusStore.getStatusForKey('complete')!.id));
   let groupedTasks = $derived(groupDataBy(tasks, 'finished', normalizeISODate));
   let sortedGroupedTasks = $derived(sortGroupedDataByGroup(groupedTasks, 'desc'));
   let filteredTasks = $derived(filterGroupedData(sortedGroupedTasks, filters));
 
-  const openModalTask = (id: number) => {
+  const openModalTask = (id: string) => {
     if (id) {
       idTask = id;
       open = true;
     }
   }
 
-  const handleKeyboard = (event: KeyboardEvent, id: number) => {
+  const handleKeyboard = (event: KeyboardEvent, id: string) => {
     if (['Space', 'Enter', 'NumpadEnter'].includes(event.code)) {
       event.preventDefault();
 

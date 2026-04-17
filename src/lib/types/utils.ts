@@ -4,6 +4,8 @@ export interface ISelectData {
 	value: string;
 }
 
+export type TSelectDataArray = ISelectData[];
+
 /** Тип для списка вкладок. */
 declare const __TTabListItemIDBrand: unique symbol;
 
@@ -42,3 +44,6 @@ export type TGroupedData<T extends object> = Map<string, T[]>;
 export interface IFilter {
 	searchText?: string;
 }
+
+/** Тип для данных из БД. */
+export type TCollectionFromDB<T> = Omit<T, 'id'>;

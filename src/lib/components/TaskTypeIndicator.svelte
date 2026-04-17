@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { TASK_TYPE } from '$constants';
-  import type { TTaskType } from '$types';
+  import { taskTypeStore } from '$stores/taskType.svelte';
+  import type { TTaskTypeID } from '$types';
 
-  let { taskType }: { taskType: TTaskType } = $props();
-  let color = $derived(taskType ? TASK_TYPE[taskType].color : 'var(--color-border)')
+  let { taskType }: { taskType: TTaskTypeID } = $props();
+  let color = $derived(taskType && (taskTypeStore.getTypeById(taskType)?.color || 'var(--color-border)'))
 </script>
 
 <div class="task-type-indicator" style:--task-type-color={color}></div>

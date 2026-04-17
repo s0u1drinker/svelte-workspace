@@ -2,16 +2,16 @@
   import TaskCard from "$components/TaskCard.svelte";
   import ModalTask from "./Modal/ModalTask.svelte";
   import NoDataText from "./NoDataText.svelte";
-  import { getTasksByIdStatus } from '$stores/tasks.svelte'
+  import { tasksStore } from '$stores/tasks.svelte'
   import type { ITaskList } from '$types';
 
   const { titleStyle = 'border', ...props }: ITaskList = $props();
-  const tasks = $derived(getTasksByIdStatus(props.idStatus));
+  const tasks = $derived(props.idStatus ? tasksStore.getTasksByIdStatus(props.idStatus) : []);
 
   let open = $state<boolean>(false)
-  let idTask = $state<number>(0);
+  let idTask = $state<string>('');
 
-  const openModalTask = (id: number) => {
+  const openModalTask = (id: string) => {
     if (id) {
       idTask = id;
       open = true;
@@ -38,7 +38,9 @@
   </div>
 </div>
 
-<ModalTask bind:open {idTask} />
+{#if idTask}
+  <ModalTask bind:open {idTask} />
+{/if}
 
 <style lang="postcss">
   .task-list {
