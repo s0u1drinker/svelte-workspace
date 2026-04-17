@@ -7,9 +7,9 @@
   import { taskTypeStore } from "$stores/taskType.svelte";
 
 onMount(() => {
-  projectsStore.loadProjectsFromFirebase()
-  taskStatusStore.loadTaskStatusFromFirebase()
-  taskTypeStore.loadTaskTypeFromFirebase()
+  projectsStore.loadProjectsFromFirebase();
+  taskStatusStore.loadTaskStatusFromFirebase();
+  taskTypeStore.loadTaskTypeFromFirebase();
 })
 </script>
 

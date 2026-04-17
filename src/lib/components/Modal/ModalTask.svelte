@@ -3,7 +3,7 @@
   import ModalText from './ModalText.svelte'
   import Button from "$components/Button.svelte";
   import Icon from "@iconify/svelte";
-  import { getTaskById } from "$stores/tasks.svelte";
+  import { tasksStore } from "$stores/tasks.svelte";
   import { taskStatusStore } from "$stores/taskStatus.svelte";
   import { taskTypeStore } from "$stores/taskType.svelte";
   import { convertDateToString } from "$lib/utils";
@@ -58,7 +58,7 @@
       onClick: () => closeModal()
     },
   });
-  let taskData = $derived(getTaskById(idTask))
+  let taskData = $derived(tasksStore.getTaskById(idTask))
   let taskColor = $derived(taskData?.type ? taskTypeStore.getPropertyOfTypeById(taskData.type, 'color') : 'var(--color-border)')
   let taskStatus = $derived(taskData?.status ? taskStatusStore.getStatusTitleById(taskData.status) : '-')
   let taskCreated = $derived(taskData?.created ? convertDateToString(taskData.created) : '-');

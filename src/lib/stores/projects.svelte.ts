@@ -1,6 +1,7 @@
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '$lib/firebase/client';
 import { projectConverter } from '$lib/firebase/converters';
+import { tasksStore } from './tasks.svelte';
 import type { Unsubscribe } from 'firebase/firestore';
 import type { IProject, TProjectID, IProjectsMap } from '$types';
 
@@ -31,6 +32,12 @@ class ProjectsStore {
 	/** Проект выбран. */
 	get isProjectSelected(): boolean {
 		return !!this.currentProjectID;
+	}
+
+	private onCurrentProjectChanged() {
+		if (!this.currentProjectID) return;
+
+		tasksStore.loadTasksFromFirebase();
 	}
 
 	/** Загрузка проектов из Firestore, а также подписка на изменения в коллекции 'projects'. */
@@ -78,6 +85,8 @@ class ProjectsStore {
 		}
 
 		this.currentProject = this._projects[id] || null;
+
+		this.onCurrentProjectChanged();
 
 		return !!this.currentProject;
 	}

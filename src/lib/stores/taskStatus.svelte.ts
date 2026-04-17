@@ -34,6 +34,7 @@ class TaskStatusStore {
 			console.error('[taskStatusStore] Ошибка при загрузке статусов:', error);
 		}
 	}
+
 	/**
 	 * Возвращает идентификатор статуса по ключу.
 	 * @param statusKey Ключ статуса (константа TASK_STATUS).

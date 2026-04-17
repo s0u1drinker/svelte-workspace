@@ -4,7 +4,7 @@
   import Button from "$components/Button.svelte";
 	import FormNewTask from "$components/Form/FormNewTask.svelte";
   import { FORM_ID, FORM_STATUS } from "$constants";
-  import { addTask } from "$stores/tasks.svelte";
+  import { tasksStore } from "$stores/tasks.svelte";
   import type { IModalTaskAdd, TTaskFormData } from "$types";
 
   let { open = $bindable(false) }: IModalTaskAdd = $props();
@@ -24,7 +24,7 @@
   }
   const handleFormSave = (data: TTaskFormData) => {
     if (data.formStatus === FORM_STATUS.success) {
-      const resultAddTask = addTask(data);
+      const resultAddTask = tasksStore.addTask(data);
 
       if (resultAddTask) {
         messageColor = 'var(--color-success)';

@@ -1,14 +1,13 @@
 import { TASK_BUTTONS, FORM_STATUS } from '$constants';
-import type { TButtonStyle, TProjectID, TTaskStatusID, ITaskType, TTaskTypeID } from '$types';
+import type { TButtonStyle, TTaskStatusID, ITaskType, TTaskTypeID } from '$types';
 
 /** Идентификатор задачи. */
 export type TTaskId = `${ITaskType['prefix']}-${number}`;
 
 /** Задача. */
 export interface ITask {
-	id: number;
+	id: string;
 	idTask: TTaskId;
-	idProject: TProjectID;
 	subject: string;
 	description: string;
 	type: TTaskTypeID;
@@ -16,6 +15,14 @@ export interface ITask {
 	status: TTaskStatusID;
 	urgent: boolean;
 	created: string;
+}
+
+/** Счетчик задач. */
+export type TTaskCounter = Record<TTaskTypeID, number>;
+
+/** Документ в БД tasks/{idProject} */
+export interface ITaskDocDB {
+	counter: TTaskCounter;
 }
 
 /** Комопнент для отображдения списка задач. */
@@ -34,7 +41,7 @@ export type TTaskCard = ITask & {
 };
 
 /** Список задач для хранилища. */
-export type TTaskList = ITask[];
+export type TaskList = ITask[];
 
 /** Кнопки в модальном окне. */
 export type TTaskButton = keyof typeof TASK_BUTTONS;
