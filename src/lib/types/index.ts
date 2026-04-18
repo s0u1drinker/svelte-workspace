@@ -9,3 +9,4 @@ export * from './input';
 export * from './form';
 export * from './tools';
 export * from './FSM';
+export * from './icon';

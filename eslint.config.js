@@ -27,5 +27,11 @@ const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 				svelteConfig
 			}
 		}
+	},
+	{
+		files: ['src/lib/components/IconCustom.svelte'],
+		rules: {
+			'svelte/no-at-html-tags': 'off'
+		}
 	}
 ];

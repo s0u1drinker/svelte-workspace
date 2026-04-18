@@ -1,5 +1,4 @@
 import { BUTTON_STYLE } from '$constants';
-import type { HTMLButtonAttributes } from 'svelte/elements';
 import type { TIconName } from './utils';
 
 export type TButtonStyle = keyof typeof BUTTON_STYLE;
@@ -12,7 +11,10 @@ export interface IButton {
 	form?: string;
 	outline?: boolean;
 	elevated?: boolean;
+	/** Имя иконки для загрузки с Iconify. */
 	icon?: TIconName;
+	/** Наименование кастомной иконки из папки lib/assets/icons */
+	iconCustom?: string;
 	buttonStyle?: TButtonStyle;
 	disabled?: boolean;
 	onClick?: () => unknown;

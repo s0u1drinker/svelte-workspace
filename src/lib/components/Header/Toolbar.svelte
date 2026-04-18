@@ -17,7 +17,7 @@
   <Button
     title="Добавить задачу"
     buttonStyle={BUTTON_STYLE.primary}
-    icon="mdi:add"
+    iconCustom="add"
     outline
     onClick={() => open = true}
     disabled={!projectsStore.currentProjectID}

@@ -1,6 +1,6 @@
 <script lang="ts">
+	import IconCustom from "$components/IconCustom.svelte";
 	import TaskList from "$components/TaskList.svelte";
-  import Icon from "@iconify/svelte";
   import { taskStatusStore } from "$stores/taskStatus.svelte";
 
   let props: { class: string } = $props();
@@ -23,9 +23,10 @@
       />
     {/each}
   {:else}
-    <Icon
+    <IconCustom
       class="dashboard__placeholder"
-      icon="carbon:workspace"
+      icon-name="workspace"
+      aria-hidden="true"
     />
   {/if}
 </div>
@@ -49,7 +50,8 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      font-size: 15rem;
+      width: 25rem;
+      height: 25rem;
       color: var(--lightgray);
     }
   }

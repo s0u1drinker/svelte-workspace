@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
+  import IconCustom from './IconCustom.svelte';
   import { BUTTON_STYLE } from '$constants';
   import type { IButton } from '$types'
 
@@ -24,8 +25,16 @@
   onclick={handleCLick}
   disabled={props.disabled}
 >
-  {#if props.icon}
-    <Icon icon={props.icon} />
+  {#if props.iconCustom}
+    <IconCustom
+      icon-name={props.iconCustom}
+      aria-hidden="true"
+    />
+  {:else if props.icon}
+    <Icon
+      icon={props.icon}
+      aria-hidden="true"
+    />
   {/if}
   <span>{title}</span>
 </button>
