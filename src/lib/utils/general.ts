@@ -52,8 +52,6 @@ export function groupDataBy<T extends object, K extends keyof T>(
 	}
 
 	if (!data.length) {
-		console.warn('[utils/groupDataBy] Пустой массив данных.');
-
 		return grouped;
 	}
 

@@ -5,12 +5,9 @@
   import ModalTask from '$components/Modal/ModalTask.svelte';
   import { tasksStore } from '$stores/tasks.svelte'
   import { taskStatusStore } from '$stores/taskStatus.svelte';
-  import { DATE_FORMATTER } from '$constants';
+  import { DATE_FORMATTER, PLACEHOLDER_TEXT } from '$constants';
   import { groupDataBy, getFormatDate, normalizeISODate, filterGroupedData, sortGroupedDataByGroup } from '$lib/utils';
   import type { IFilter } from '$types';
-
-  const NO_TASKS_NO_FILTERS_TEXT = 'Нет ни одной завершённой задачи. Тебе не стыдно?';
-  const NO_TASKS_BUT_FILTERS_TEXT = 'Ну и намудрил ты с фильтрами... ничего не найдено.';
 
   let { filters = {} }: { filters: IFilter } = $props();
   let open = $state<boolean>(false)
@@ -39,7 +36,7 @@
 <div class="f-tasks-list">
   {#if !filteredTasks.size}
     <div class="f-tasks-list__placeholder">
-      { Object.keys(filters).length ? NO_TASKS_BUT_FILTERS_TEXT : NO_TASKS_NO_FILTERS_TEXT }
+      { !tasks.length ? PLACEHOLDER_TEXT.finishedTasks.noTasks : PLACEHOLDER_TEXT.finishedTasks.noFilteredTasks }
     </div>
   {:else}
     {#each filteredTasks as [isoDate, tasksArray] (`group-${isoDate || 'empty'}`)}
