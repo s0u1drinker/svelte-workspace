@@ -1,5 +1,15 @@
+import type { TTaskStatusMapID } from '$types';
+
 /** Статус задачи. */
 export const TASK_STATUS = ['noStatus', 'sprint', 'inProgress', 'test', 'complete'] as const;
+
+export const TASK_STATUS_MAP = {
+	noStatus: 'noStatus',
+	sprint: 'sprint',
+	inProgress: 'inProgress',
+	test: 'test',
+	complete: 'complete'
+} satisfies TTaskStatusMapID;
 
 /** Кнопки в модальном окне. */
 export const TASK_BUTTONS = {
@@ -10,5 +20,6 @@ export const TASK_BUTTONS = {
 	test: 'На тест',
 	return: 'Вернуть в работу',
 	done: 'Готово',
-	close: 'Закрыть'
+	close: 'Закрыть',
+	cancel: 'Отмена'
 } as const;

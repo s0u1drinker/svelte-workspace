@@ -2,73 +2,22 @@
   import Icon from "@iconify/svelte";
   import Modal from "./Modal.svelte";
   import ModalText from './ModalText.svelte'
-  import Button from "$components/Button.svelte";
 	import TaskTypeIndicator from "$components/TaskTypeIndicator.svelte";
 	import DeadlineIndicator from "$components/DeadlineIndicator.svelte";
+	import IconCustom from "$components/IconCustom.svelte";
+  import ModalButtonsDefault from "$components/ModalButtons/ModalButtonsDefault.svelte";
   import { tasksStore } from "$stores/tasks.svelte";
   import { taskStatusStore } from "$stores/taskStatus.svelte";
   import { taskTypeStore } from "$stores/taskType.svelte";
+  import { TASK_STATUS_MAP } from "$constants";
   import { convertDateToString } from "$lib/utils";
-  import { TASK_BUTTONS, BUTTON_STYLE } from "$constants";
-  import type { IModalTask, TTaskModalButtons, TTaskStatusID, TTaskStatusKey } from '$types'
-
-  const ID_MAP: Record<TTaskStatusKey, TTaskStatusID> = {
-    noStatus: taskStatusStore.getStatusForKey('noStatus')!.id,
-    sprint: taskStatusStore.getStatusForKey('sprint')!.id,
-    inProgress: taskStatusStore.getStatusForKey('inProgress')!.id,
-    test: taskStatusStore.getStatusForKey('test')!.id,
-    complete: taskStatusStore.getStatusForKey('complete')!.id,
-  } as const;
+  import type { IModalTask, TTaskStatusID } from '$types'
+	import ModalButtonsDelete from "$components/ModalButtons/ModalButtonsDelete.svelte";
 
   let { open = $bindable(false), idTask }: IModalTask = $props();
+  let showDeleteButtons = $state<boolean>(false);
   let isBeingRemoved = $state<boolean>(false);
   let messageText = $state<string>('');
-  let modalButtons = $state<TTaskModalButtons>({
-    add: {
-      title: TASK_BUTTONS.add,
-      statusToShow: [ID_MAP.noStatus],
-      onClick: () => changeStatusTo(ID_MAP.sprint)
-    },
-    take: {
-      title: TASK_BUTTONS.take,
-      statusToShow: [ID_MAP.sprint],
-      onClick: () => changeStatusTo(ID_MAP.inProgress)
-    },
-    delete: {
-      title: TASK_BUTTONS.delete,
-      buttonStyle: BUTTON_STYLE.danger,
-      statusToShow: [ID_MAP.noStatus],
-      onClick: () => deleteTask(idTask)
-    },
-    toBacklog: {
-      title: TASK_BUTTONS.toBacklog,
-      buttonStyle: BUTTON_STYLE.danger,
-      statusToShow: [ID_MAP.sprint],
-      onClick: () => changeStatusTo(ID_MAP.noStatus)
-    },
-    test: {
-      title: TASK_BUTTONS.test,
-      statusToShow: [ID_MAP.inProgress],
-      onClick: () => changeStatusTo(ID_MAP.test)
-    },
-    return: {
-      title: TASK_BUTTONS.return,
-      buttonStyle: BUTTON_STYLE.danger,
-      statusToShow: [ID_MAP.test],
-      onClick: () => changeStatusTo(ID_MAP.inProgress)
-    },
-    done: {
-      title: TASK_BUTTONS.done,
-      buttonStyle: BUTTON_STYLE.success,
-      statusToShow: [ID_MAP.test],
-      onClick: () => finishTask(idTask)
-    },
-    close: {
-      title: TASK_BUTTONS.close,
-      buttonStyle: BUTTON_STYLE.gray,
-      onClick: () => closeModal()
-    },
-  });
 
   let isProcessing = $derived<boolean>(isBeingRemoved);
   let taskData = $derived(tasksStore.getTaskById(idTask))
@@ -84,43 +33,35 @@
       setTimeout(() => callback(), 600)
     }
   }
+
   /**
    * Меняет статус задачи на указанный и закрывает окно.
    * @param status Новый статус задачи.
-   * @param closeModal Закрыть окно после изменения статуса (по умолчанию: true).
    */
-  const changeStatusTo = (status: TTaskStatusID, close: boolean = true): void => {
+  const changeStatusTo = (status: TTaskStatusID): void => {
     if (taskData) {
       taskData.status = status
-
-      if (close) {
-        closeModal()
-      }
+      closeModal();
     }
   }
 
-  /**
-   * Перевод задачи в статус "Завершено".
-   * @param id Идентификатор задачи.
-   */
-  const finishTask = (id: string): void => {
-    changeStatusTo(ID_MAP.complete)
+  /** Перевод задачи в статус "Завершено". */
+  const finishTask = (): void => {
+    changeStatusTo(TASK_STATUS_MAP.complete)
 
     const fieldsToUpdate = {
       finished: new Date().toISOString()
     }
     
-    tasksStore.updateTask(id, fieldsToUpdate)
+    tasksStore.updateTask(idTask, fieldsToUpdate)
   }
 
-  /**
-   * Удаляет задачу по идентификатору.
-   * @param id Идентификатор задачи.
-   */
-  const deleteTask = (id: string) => {
+  /** Удаляет задачу по идентификатору. */
+  const deleteTask = () => {
+    showDeleteButtons = false;
     isBeingRemoved = true;
 
-    const isDeletionSuccess = tasksStore.deleteTask(id)
+    const isDeletionSuccess = tasksStore.deleteTask(idTask)
 
     if (isDeletionSuccess) {
       closeModal(() => isBeingRemoved = false);
@@ -175,24 +116,35 @@
     {/if}
 
     {#snippet message()}
-      {#if isProcessing}
-        <Icon icon='svg-spinners:180-ring' />
-        {isBeingRemoved ? 'Удаляю задачу...' : 'Процесс идёт...'}
+      {#if showDeleteButtons}
+        <span><IconCustom icon-name="warning" color="var(--color-danger)" /> Вы действительно хотите удалить задачу?</span>
+        <span>(Она всё-равно &laquo;вернётся&raquo; после обновления страницы<br/>или выбора другого проекта)</span>
+      {:else if isProcessing}
+        <span>
+          <Icon icon='svg-spinners:180-ring' />
+          {isBeingRemoved ? 'Удаляю задачу...' : 'Процесс идёт...'}
+        </span>
       {:else}
         {messageText}
       {/if}
     {/snippet}
 
     {#snippet buttons()}
-      {#each Object.entries(modalButtons) as [key, button] (`modal-button-${key}`)}
-        {#if !button?.statusToShow || button.statusToShow.includes(taskData.status)}
-          <Button
-            {...button}
-            elevated
-            disabled={isProcessing}
-          />
-        {/if}
-      {/each}
+      {#if showDeleteButtons}
+        <ModalButtonsDelete
+          onDelete={deleteTask}
+          onCancel={() => showDeleteButtons = false}
+        />
+      {:else}
+        <ModalButtonsDefault
+          taskStatus={taskData.status}
+          disabled={isProcessing}
+          onClose={closeModal}
+          onChangeStatus={changeStatusTo}
+          onComplete={finishTask}
+          onDelete={() => showDeleteButtons = true}
+        />
+      {/if}
     {/snippet}
   </Modal>
 {:else}

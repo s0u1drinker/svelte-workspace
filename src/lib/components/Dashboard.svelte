@@ -2,12 +2,13 @@
 	import IconCustom from "$components/IconCustom.svelte";
 	import TaskList from "$components/TaskList.svelte";
   import { taskStatusStore } from "$stores/taskStatus.svelte";
+  import { TASK_STATUS_MAP } from "$constants";
 
   let props: { class: string } = $props();
   let columns = $derived([
-    taskStatusStore.getStatusForKey('sprint'),
-    taskStatusStore.getStatusForKey('inProgress'),
-    taskStatusStore.getStatusForKey('test'),
+    taskStatusStore.statuses[TASK_STATUS_MAP.sprint],
+    taskStatusStore.statuses[TASK_STATUS_MAP.inProgress],
+    taskStatusStore.statuses[TASK_STATUS_MAP.test],
   ]);
   let isColumnsDataSet = $derived(columns.every((column) => !!column?.id));
 </script>

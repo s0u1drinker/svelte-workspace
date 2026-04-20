@@ -176,8 +176,8 @@
 
     &__message {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      text-align: center;
       gap: var(--indent-half);
       color: var(--color-text-secondary);
     }

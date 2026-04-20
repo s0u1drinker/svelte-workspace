@@ -47,7 +47,7 @@ export type TaskList = ITask[];
 /** Кнопки в модальном окне. */
 export type TTaskButton = keyof typeof TASK_BUTTONS;
 export type TTaskModalButtons = {
-	[P in TTaskButton]: {
+	[P in TTaskButton]?: {
 		title: string;
 		onClick: () => void;
 		buttonStyle?: TButtonStyle;

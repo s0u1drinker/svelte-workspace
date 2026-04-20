@@ -4,15 +4,14 @@
 	import TaskTypeIndicator from '$components/TaskTypeIndicator.svelte';
   import ModalTask from '$components/Modal/ModalTask.svelte';
   import { tasksStore } from '$stores/tasks.svelte'
-  import { taskStatusStore } from '$stores/taskStatus.svelte';
-  import { DATE_FORMATTER, PLACEHOLDER_TEXT } from '$constants';
+  import { DATE_FORMATTER, PLACEHOLDER_TEXT, TASK_STATUS_MAP } from '$constants';
   import { groupDataBy, getFormatDate, normalizeISODate, filterGroupedData, sortGroupedDataByGroup } from '$lib/utils';
   import type { IFilter } from '$types';
 
   let { filters = {} }: { filters: IFilter } = $props();
   let open = $state<boolean>(false)
   let idTask = $state<string>('');
-  let tasks = $derived(tasksStore.getTasksByIdStatus(taskStatusStore.getStatusForKey('complete')!.id));
+  let tasks = $derived(tasksStore.getTasksByIdStatus(TASK_STATUS_MAP.complete));
   let groupedTasks = $derived(groupDataBy(tasks, 'finished', normalizeISODate));
   let sortedGroupedTasks = $derived(sortGroupedDataByGroup(groupedTasks, 'desc'));
   let filteredTasks = $derived(filterGroupedData(sortedGroupedTasks, filters));

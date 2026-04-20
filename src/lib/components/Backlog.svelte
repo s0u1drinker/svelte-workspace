@@ -1,12 +1,12 @@
 <script lang="ts">
   import TaskList from "./TaskList.svelte";
-  import { taskStatusStore } from "$stores/taskStatus.svelte";
+  import { TASK_STATUS_MAP } from "$constants";
 </script>
 
 <div class="backlog">
   <TaskList
     listTitle="Список задач"
-    idStatus={taskStatusStore.getStatusForKey('noStatus')?.id}
+    idStatus={TASK_STATUS_MAP.noStatus}
     noDataText="Нет задач"
     titleStyle="blur"
   />

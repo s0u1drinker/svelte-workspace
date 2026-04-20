@@ -1,19 +1,18 @@
 import { TASK_STATUS } from '$constants';
 
 /** Идентификатор статуса задачи. */
-declare const __TTaskStatusIDBrand: unique symbol;
-
-export type TTaskStatusID = string & { [__TTaskStatusIDBrand]: void };
-
-export type TTaskStatusKey = (typeof TASK_STATUS)[number];
+export type TTaskStatusID = (typeof TASK_STATUS)[number];
 
 export interface ITaskStatus {
-	key: TTaskStatusKey;
 	title: string;
 }
 
-export interface ITaskStatusFull extends ITaskStatus {
+export interface ITaskStatusWithID extends ITaskStatus {
 	id: TTaskStatusID;
 }
 
-export type TTaskStatusMap = Record<TTaskStatusID, ITaskStatus>;
+export type TTaskStatusMap = Record<TTaskStatusID, ITaskStatusWithID>;
+
+export type TTaskStatusMapID = {
+	[P in TTaskStatusID]: P;
+};

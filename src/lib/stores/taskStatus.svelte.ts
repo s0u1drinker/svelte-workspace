@@ -1,13 +1,6 @@
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '$lib/firebase/client';
-import type {
-	ITaskStatus,
-	TTaskStatusMap,
-	TTaskStatusID,
-	TTaskStatusKey,
-	TSelectDataArray,
-	ITaskStatusFull
-} from '$types';
+import type { ITaskStatus, TTaskStatusMap, TTaskStatusID, TSelectDataArray } from '$types';
 
 class TaskStatusStore {
 	private _status = $state<TTaskStatusMap>({} as TTaskStatusMap);
@@ -26,26 +19,13 @@ class TaskStatusStore {
 				const id = doc.id as TTaskStatusID;
 				const data = doc.data() as ITaskStatus;
 
-				newStatuses[id] = { ...data };
+				newStatuses[id] = { ...data, id };
 			});
 
 			this._status = newStatuses;
 		} catch (error) {
 			console.error('[taskStatusStore] Ошибка при загрузке статусов:', error);
 		}
-	}
-
-	/**
-	 * Возвращает идентификатор статуса по ключу.
-	 * @param statusKey Ключ статуса (константа TASK_STATUS).
-	 * @returns Идентификатор статуса.
-	 */
-	getStatusForKey(statusKey: TTaskStatusKey): ITaskStatusFull | null {
-		if (!statusKey) return null;
-
-		const foundStatus = Object.entries(this._status).find(([, status]) => status.key === statusKey);
-
-		return foundStatus ? { ...foundStatus[1], id: foundStatus[0] as TTaskStatusID } : null;
 	}
 
 	/** Возвращает список типов задач для выпадающего списка. */

@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { TButtonStyle } from './button';
+import type { TButtonStyle, TTaskStatusID } from '$types';
 
 /** Позиция модального окна. */
 type TModalPosition = 'center' | 'left';
@@ -34,3 +34,19 @@ export type IModalTask = Pick<IModal, 'open'> & {
 	idTask: string;
 };
 export type IModalTaskAdd = Pick<IModal, 'open'>;
+
+/** Кнопки. */
+export interface IModalButtonsDefault {
+	taskStatus: TTaskStatusID;
+	disabled?: boolean;
+	onClose: () => void;
+	onChangeStatus: (status: TTaskStatusID) => void;
+	onComplete: () => void;
+	onDelete: () => void;
+}
+
+export interface IModalButtonsDelete {
+	disabled?: boolean;
+	onDelete: () => void;
+	onCancel: () => void;
+}
