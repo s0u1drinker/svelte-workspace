@@ -5,11 +5,13 @@ export type TButtonStyle = keyof typeof BUTTON_STYLE;
 type TButtonType = 'button' | 'submit' | 'reset';
 
 export interface IButton {
-	title: string;
+	title?: string;
+	'aria-label'?: string;
 	class?: string;
 	type?: TButtonType;
 	form?: string;
 	outline?: boolean;
+	ghost?: boolean;
 	elevated?: boolean;
 	/** Имя иконки для загрузки с Iconify. */
 	icon?: TIconName;

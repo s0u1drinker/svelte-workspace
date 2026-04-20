@@ -10,7 +10,9 @@
     type: buttonType = 'button',
     ...props
   }: IButton = $props();
-  let style = $derived(props?.outline ? `button_outline button_outline_${buttonStyle}` : `button_${buttonStyle}`)
+  let outlineStyle = $derived(props?.outline ? ' button_outline' : '');
+  let ghostStyle = $derived(props?.ghost ? ' button_ghost' : '');
+  let style = $derived(`button_${buttonStyle}${outlineStyle || ghostStyle}`)
   let shadow = $derived(props?.elevated && 'button_elevated' )
 
   const handleCLick = () => {
@@ -24,6 +26,7 @@
   form={props?.form}
   onclick={handleCLick}
   disabled={props.disabled}
+  aria-label={props['aria-label']}
 >
   {#if props.iconCustom}
     <IconCustom
@@ -61,7 +64,7 @@
       cursor: not-allowed;
     }
 
-    &:not(.button_outline) {
+    &:not(.button_outline, .button_ghost) {
       @mixin hover {
         background-color: hsl(from var(--button-color) h s calc(l - 10));
       }
@@ -92,14 +95,26 @@
     }
     
     &_gray{
-      --button-color: var(--color-border);
+      --button-color: var(--gray);
 
       color: inherit;
     }
 
+    &_ghost {
+      --ghost-bg-color: transparent;
+      --ghost-txt-color: var(--button-color);
+
+      background-color: var(--ghost-bg-color);
+      color: var(--ghost-txt-color);
+
+      @mixin hover {
+        --ghost-bg-color: color-mix(in srgb, var(--ghost-txt-color) 30%, var(--color-white));
+      }
+    }
+
     &_outline {
       --outline-bg-color: transparent;
-      --outline-txt-color: inherit;
+      --outline-txt-color: var(--button-color);
 
       background-color: var(--outline-bg-color);
       color: var(--outline-txt-color);
@@ -109,26 +124,6 @@
         --outline-bg-color: var(--outline-txt-color);
 
         color: var(--color-white);
-      }
-
-      &_primary {
-        --outline-txt-color: var(--color-primary);
-      }
-
-      &_secondary{
-        --outline-txt-color: var(--color-secondary);
-      }
-      
-      &_danger{
-        --outline-txt-color: var(--color-danger);
-      }
-      
-      &_success{
-        --outline-txt-color: var(--color-success);
-      }
-      
-      &_gray{
-        --outline-txt-color: var(--gray);
       }
     }
   }
