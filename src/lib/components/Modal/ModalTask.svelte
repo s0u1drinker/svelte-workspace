@@ -12,46 +12,55 @@
   import { TASK_BUTTONS, BUTTON_STYLE } from "$constants";
   import type { IModalTask, TTaskModalButtons, TTaskStatusID, TTaskStatusKey } from '$types'
 
-  let { open = $bindable(false), idTask }: IModalTask = $props();
-  let idMap: Record<TTaskStatusKey, TTaskStatusID> = {
+  const ID_MAP: Record<TTaskStatusKey, TTaskStatusID> = {
     noStatus: taskStatusStore.getStatusForKey('noStatus')!.id,
     sprint: taskStatusStore.getStatusForKey('sprint')!.id,
     inProgress: taskStatusStore.getStatusForKey('inProgress')!.id,
     test: taskStatusStore.getStatusForKey('test')!.id,
     complete: taskStatusStore.getStatusForKey('complete')!.id,
-  }
+  } as const;
+
+  let { open = $bindable(false), idTask }: IModalTask = $props();
+  let isBeingRemoved = $state<boolean>(false);
+  let messageText = $state<string>('');
   let modalButtons = $state<TTaskModalButtons>({
     add: {
       title: TASK_BUTTONS.add,
-      statusToShow: [idMap.noStatus],
-      onClick: () => changeStatusTo(idMap.sprint)
+      statusToShow: [ID_MAP.noStatus],
+      onClick: () => changeStatusTo(ID_MAP.sprint)
     },
     take: {
       title: TASK_BUTTONS.take,
-      statusToShow: [idMap.sprint],
-      onClick: () => changeStatusTo(idMap.inProgress)
+      statusToShow: [ID_MAP.sprint],
+      onClick: () => changeStatusTo(ID_MAP.inProgress)
     },
     delete: {
       title: TASK_BUTTONS.delete,
       buttonStyle: BUTTON_STYLE.danger,
-      statusToShow: [idMap.sprint],
-      onClick: () => changeStatusTo(idMap.noStatus)
+      statusToShow: [ID_MAP.noStatus],
+      onClick: () => deleteTask(idTask)
+    },
+    toBacklog: {
+      title: TASK_BUTTONS.toBacklog,
+      buttonStyle: BUTTON_STYLE.danger,
+      statusToShow: [ID_MAP.sprint],
+      onClick: () => changeStatusTo(ID_MAP.noStatus)
     },
     test: {
       title: TASK_BUTTONS.test,
-      statusToShow: [idMap.inProgress],
-      onClick: () => changeStatusTo(idMap.test)
+      statusToShow: [ID_MAP.inProgress],
+      onClick: () => changeStatusTo(ID_MAP.test)
     },
     return: {
       title: TASK_BUTTONS.return,
       buttonStyle: BUTTON_STYLE.danger,
-      statusToShow: [idMap.test],
-      onClick: () => changeStatusTo(idMap.inProgress)
+      statusToShow: [ID_MAP.test],
+      onClick: () => changeStatusTo(ID_MAP.inProgress)
     },
     done: {
       title: TASK_BUTTONS.done,
       buttonStyle: BUTTON_STYLE.success,
-      statusToShow: [idMap.test],
+      statusToShow: [ID_MAP.test],
       onClick: () => finishTask(idTask)
     },
     close: {
@@ -61,13 +70,20 @@
     },
   });
 
+  let isProcessing = $derived<boolean>(isBeingRemoved);
   let taskData = $derived(tasksStore.getTaskById(idTask))
   let taskStatus = $derived(taskData?.status ? taskStatusStore.getStatusTitleById(taskData.status) : '-')
   let taskCreated = $derived(taskData?.created ? convertDateToString(taskData.created) : '-');
   let taskDeadline = $derived(taskData?.deadline ? convertDateToString(taskData.deadline) : '-');
   let taskFinished = $derived(taskData?.finished ? convertDateToString(taskData.finished) : '-')
 
-  const closeModal = () => open = false
+  const closeModal = (callback?: () => void) => {
+    open = false
+
+    if (callback) {
+      setTimeout(() => callback(), 600)
+    }
+  }
   /**
    * Меняет статус задачи на указанный и закрывает окно.
    * @param status Новый статус задачи.
@@ -88,13 +104,30 @@
    * @param id Идентификатор задачи.
    */
   const finishTask = (id: string): void => {
-    changeStatusTo(idMap.complete)
+    changeStatusTo(ID_MAP.complete)
 
     const fieldsToUpdate = {
       finished: new Date().toISOString()
     }
     
     tasksStore.updateTask(id, fieldsToUpdate)
+  }
+
+  /**
+   * Удаляет задачу по идентификатору.
+   * @param id Идентификатор задачи.
+   */
+  const deleteTask = (id: string) => {
+    isBeingRemoved = true;
+
+    const isDeletionSuccess = tasksStore.deleteTask(id)
+
+    if (isDeletionSuccess) {
+      closeModal(() => isBeingRemoved = false);
+    } else {
+      messageText = 'Не удалось удалить задачу. Попробуйте позже.';
+      isBeingRemoved = false;
+    }
   }
 </script>
 
@@ -141,10 +174,23 @@
       />
     {/if}
 
+    {#snippet message()}
+      {#if isProcessing}
+        <Icon icon='svg-spinners:180-ring' />
+        {isBeingRemoved ? 'Удаляю задачу...' : 'Процесс идёт...'}
+      {:else}
+        {messageText}
+      {/if}
+    {/snippet}
+
     {#snippet buttons()}
       {#each Object.entries(modalButtons) as [key, button] (`modal-button-${key}`)}
         {#if !button?.statusToShow || button.statusToShow.includes(taskData.status)}
-          <Button {...button} elevated />
+          <Button
+            {...button}
+            elevated
+            disabled={isProcessing}
+          />
         {/if}
       {/each}
     {/snippet}

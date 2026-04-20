@@ -3,8 +3,9 @@ export const TASK_STATUS = ['noStatus', 'sprint', 'inProgress', 'test', 'complet
 
 /** Кнопки в модальном окне. */
 export const TASK_BUTTONS = {
-	add: 'Добавить в спринт',
-	take: 'Взять в работу',
+	add: 'В спринт',
+	take: 'В работу',
+	toBacklog: 'Вернуть в список',
 	delete: 'Удалить',
 	test: 'На тест',
 	return: 'Вернуть в работу',

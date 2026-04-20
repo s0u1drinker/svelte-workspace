@@ -148,6 +148,7 @@
   <label class="form__item">
     <span class="form__label">Срочно</span>
     <input
+      class="align-self_center"
       type="checkbox"
       bind:checked={formData.urgent}
     />

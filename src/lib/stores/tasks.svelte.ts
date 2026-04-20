@@ -126,12 +126,37 @@ class TasksStore {
 
 				return true;
 			} catch (error) {
-				console.error('[tasksStore] Не удалось добавить данные:', error);
+				console.error('[tasksStore/addTaskToDB] Не удалось добавить данные:', error);
 
 				return false;
 			}
 		} else {
-			console.error('[tasksStore] Не выбран проект.');
+			console.error('[tasksStore/addTaskToDB] Не выбран проект.');
+
+			return false;
+		}
+	}
+
+	/**
+	 * Удалить задачу.
+	 * @param id Идентификатор задачи.
+	 * @returns Результат удаления.
+	 */
+	deleteTask(id: string): boolean {
+		if (!id) {
+			console.warn(`[tasksStore/deleteTask]: Не указан идентификатор задачи: ${id}.`);
+
+			return false;
+		}
+
+		const index = this._tasks.findIndex((item) => item.id === id);
+
+		if (~index) {
+			setTimeout(() => this._tasks.splice(index, 1), 500);
+
+			return true;
+		} else {
+			console.warn(`[tasksStore/deleteTask]: Неверный идентификатор задачи: ${id}.`);
 
 			return false;
 		}

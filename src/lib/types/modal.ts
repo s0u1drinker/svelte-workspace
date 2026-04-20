@@ -8,11 +8,13 @@ export interface IModal {
 	open: boolean;
 	header?: Snippet;
 	children?: Snippet;
+	message?: Snippet;
 	buttons?: Snippet;
 	onClose?: () => void;
 	showCloseButton?: boolean;
 	class?: string;
 	position?: TModalPosition;
+	messageColor?: string;
 }
 
 /** Модальное окно с ошибккой. */

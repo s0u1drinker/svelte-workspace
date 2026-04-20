@@ -8,11 +8,11 @@
   import type { IModalTaskAdd, TTaskFormData } from "$types";
 
   let { open = $bindable(false) }: IModalTaskAdd = $props();
-  let message: string = $state('');
+  let messageText: string = $state('');
   let messageColor: string = $state('');
   let formRef: FormNewTask | undefined = $state();
 
-  const clearMessage = () => message = ''
+  const clearMessage = () => messageText = ''
   const clearForm = () => {
     setTimeout(() => {
       formRef?.clearForm()
@@ -28,13 +28,13 @@
 
       if (resultAddTask) {
         messageColor = 'var(--color-success)';
-        message = 'Задача добавлена успешно'
+        messageText = 'Задача добавлена успешно'
 
         setTimeout(closeModal, 1000)
       }
     } else {
       messageColor = 'var(--color-danger)';
-      message = data.error
+      messageText = data.error
     }
   }
 </script>
@@ -44,6 +44,7 @@
   class="modal-new-task"
   position="left"
   onClose={clearForm}
+  {messageColor}
 >
   {#snippet header()}
     <h3 class="modal-new-task__header">Новая задача для &laquo;{projectsStore.currentProjectName}&raquo;</h3>
@@ -55,10 +56,10 @@
       onSubmit={handleFormSave}
     />
   </div>
-  <div
-    class="modal-new-task__message"
-    style:color={messageColor}
-  >{message}</div>
+  
+  {#snippet message()}
+    {messageText}
+  {/snippet}
 
   {#snippet buttons()}
     <Button
@@ -96,10 +97,6 @@
     
     &__form {
       height: 100%;
-    }
-
-    &__message {
-      text-align: center;
     }
   }
 

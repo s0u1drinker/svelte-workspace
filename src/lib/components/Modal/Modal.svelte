@@ -6,11 +6,13 @@
     open = $bindable(false),
     header,
     children,
+    message,
     buttons,
     onClose,
     showCloseButton = true,
     class: className = '',
-    position = 'center'
+    position = 'center',
+    messageColor = '',
   }: IModal = $props();
 
   let dialogEl: HTMLDialogElement | null = null;
@@ -74,6 +76,11 @@
     {#if children}
       <div class="modal__body">
         {@render children()}
+      </div>
+    {/if}
+    {#if message}
+      <div class="modal__message" style:color={messageColor}>
+        {@render message()}
       </div>
     {/if}
     {#if buttons}
@@ -165,6 +172,14 @@
       &:hover {
         background-color: var(--gray);
       }
+    }
+
+    &__message {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--indent-half);
+      color: var(--color-text-secondary);
     }
 
     &__buttons {
