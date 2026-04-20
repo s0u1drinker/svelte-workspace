@@ -36,7 +36,9 @@
       aria-hidden="true"
     />
   {/if}
-  <span>{title}</span>
+  {#if title}
+    <span>{title}</span>
+  {/if}
 </button>
 
 <style lang="postcss">
