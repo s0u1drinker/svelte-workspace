@@ -264,6 +264,10 @@
     color: var(--color-danger);
   }
 
+  :global(.modal-task .modal__header) {
+    justify-content: flex-start;
+  }
+
   .modal-task {
 
     &__info {

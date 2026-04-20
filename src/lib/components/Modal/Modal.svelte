@@ -156,6 +156,7 @@
       display: flex;
       gap: var(--indent-half);
       align-items: center;
+      justify-content: center;
       min-height: 2rem;
     }
 
