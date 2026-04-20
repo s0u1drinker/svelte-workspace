@@ -152,6 +152,13 @@
       }
     }
 
+    &__header{
+      display: flex;
+      gap: var(--indent-half);
+      align-items: center;
+      min-height: 2rem;
+    }
+
     &__content {
       display: flex;
       flex-direction: column;

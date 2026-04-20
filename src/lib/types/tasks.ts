@@ -18,6 +18,8 @@ export interface ITask {
 	finished: string;
 }
 
+export type TTaskDataUpdateInBacklog = Pick<ITask, 'description' | 'deadline' | 'urgent'>;
+
 /** Счетчик задач. */
 export type TTaskCounter = Record<TTaskTypeID, number>;
 

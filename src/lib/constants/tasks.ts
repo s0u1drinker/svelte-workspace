@@ -21,5 +21,6 @@ export const TASK_BUTTONS = {
 	return: 'Вернуть в работу',
 	done: 'Готово',
 	close: 'Закрыть',
-	cancel: 'Отмена'
+	cancel: 'Отмена',
+	save: 'Сохранить'
 } as const;

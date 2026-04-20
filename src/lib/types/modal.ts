@@ -50,3 +50,9 @@ export interface IModalButtonsDelete {
 	onDelete: () => void;
 	onCancel: () => void;
 }
+
+export interface IModalButtonsEdit {
+	disabled?: boolean;
+	onSave: () => void;
+	onCancel: () => void;
+}

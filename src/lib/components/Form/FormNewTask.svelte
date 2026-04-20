@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { FORM_ID, FORM_FIELD_NAME, FORM_STATUS } from "$constants";
+  import { FORM_ID, FORM_FIELD_NAME, FORM_STATUS, TASK_STATUS_MAP } from "$constants";
   import { taskTypeStore } from "$stores/taskType.svelte";
   import { taskStatusStore } from "$stores/taskStatus.svelte";
   import { sanitizeString, getLocaleISOString } from "$lib/utils";
-  import type { TFormNewTask, ITaskFormDataPayload, ITaskFormDataError, TTaskTypeID, TTaskStatusID } from "$types";
+  import type { TFormNewTask, ITaskFormDataPayload, ITaskFormDataError, TTaskTypeID } from "$types";
 
   const ID = FORM_ID.newTask;
   const SUBJECT_NAME = FORM_FIELD_NAME[ID].subject
@@ -14,8 +14,8 @@
     subject: '',
     description: '',
     type: Object.keys(taskTypeStore.types)[0] as TTaskTypeID,
-    deadline: '',
-    status: taskStatusStore.getStatusForKey('noStatus')?.id as TTaskStatusID,
+    deadline: MIN_DATE,
+    status: TASK_STATUS_MAP.noStatus,
     urgent: false,
   }
 
