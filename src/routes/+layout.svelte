@@ -1,5 +1,6 @@
 <script lang="ts">
   import Header from '$components/Header/Header.svelte';
+  import MediaQueryPlaceholder from '$components/MediaQueryPlaceholder.svelte';
   import '../app.css';
 </script>
 
@@ -8,6 +9,8 @@
 <main>
   <slot />
 </main>
+
+<MediaQueryPlaceholder />
 
 <style lang="postcss">
   :root {
@@ -20,5 +23,9 @@
     @media(--viewport-lg) {
       height: calc(100vh - var(--header-height));
     }
+  }
+
+  @media (--viewport-xl) {
+
   }
 </style>
