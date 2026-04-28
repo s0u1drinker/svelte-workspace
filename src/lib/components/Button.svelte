@@ -95,7 +95,7 @@
     }
     
     &_gray{
-      --button-color: var(--gray);
+      --button-color: var(--lightgray);
 
       color: inherit;
     }
