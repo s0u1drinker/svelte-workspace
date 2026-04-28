@@ -16,6 +16,12 @@ export interface ITask {
 	urgent: boolean;
 	created: string;
 	finished: string;
+	changes?: ITaskChange[];
+}
+
+export interface ITaskChange {
+	dateOfChange: string;
+	status: TTaskStatusID;
 }
 
 export type TTaskDataUpdateInBacklog = Pick<ITask, 'description' | 'deadline' | 'urgent'>;

@@ -5,6 +5,7 @@
   import Button from "$components/Button.svelte";
 	import TaskTypeIndicator from "$components/TaskTypeIndicator.svelte";
 	import DeadlineIndicator from "$components/DeadlineIndicator.svelte";
+	import ListOfTaskStatusChanges from "$components/ListOfTaskStatusChanges.svelte";
 	import IconCustom from "$components/IconCustom.svelte";
   import ModalButtonsDefault from "$components/ModalButtons/ModalButtonsDefault.svelte";
 	import ModalButtonsDelete from "$components/ModalButtons/ModalButtonsDelete.svelte";
@@ -14,7 +15,7 @@
   import { taskTypeStore } from "$stores/taskType.svelte";
   import { TASK_STATUS_MAP } from "$constants";
   import { convertDateToString, getLocaleISOString } from "$lib/utils";
-  import type { IModalTask, TTaskStatusID, TTaskDataUpdateInBacklog } from '$types'
+  import type { IModalTask, TTaskStatusID, TTaskDataUpdateInBacklog, ITaskChange } from '$types'
 
   let { open = $bindable(false), idTask }: IModalTask = $props();
   let showDeleteButtons = $state<boolean>(false);
@@ -55,8 +56,20 @@
    * @param status Новый статус задачи.
    */
   const changeStatusTo = (status: TTaskStatusID): void => {
-    if (taskData) {
-      taskData.status = status
+    if (taskData && status) {
+      const changes: ITaskChange[] = [
+        ...taskData.changes || [],
+        {
+          dateOfChange: new Date().toISOString(),
+          status,
+        }
+      ];
+
+      tasksStore.updateTask(idTask, {
+        status,
+        changes,
+      })
+
       closeModal();
     }
   }
@@ -193,6 +206,12 @@
         />
       </div>
     {/if}
+    {#if taskData.changes?.length}
+      <ListOfTaskStatusChanges
+        class="modal-task__list-of-changes"
+        listOfChanges={taskData.changes}
+      />
+    {/if}
     {#if taskData.urgent}
       <Icon
         icon="mdi:fire"
@@ -304,6 +323,10 @@
       width: 8rem;
       text-decoration: underline;
       flex-shrink: 0;
+    }
+
+    :global(&__list-of-changes) {
+      margin-top: 2rem;
     }
   }
 </style>
