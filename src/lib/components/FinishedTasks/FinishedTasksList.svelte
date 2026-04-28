@@ -41,7 +41,7 @@
     {#each filteredTasks as [isoDate, tasksArray] (`group-${isoDate || 'empty'}`)}
       <div class="f-tasks-list__group">
         <h3 class="f-tasks-list__group-title">
-          {getFormatDate(DATE_FORMATTER.textMonth, isoDate)}
+          {getFormatDate(isoDate, DATE_FORMATTER.textMonth)}
         </h3>
         <div class="f-tasks-list__list">
           {#each tasksArray as task (task.id)}

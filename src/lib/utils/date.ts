@@ -1,12 +1,17 @@
+import { DATE_FORMATTER } from '$constants';
+
 /**
  * Форматирует строку с датой в локализованный читаемый вид.
  * Если дата не передана или пустая, возвращает заглушку 'Дата не указана'.
  *
- * @param formatter - Форматтер Intl.DateTimeFormat. Можно взять из константы DATE_FORMATTER.
  * @param date - Строка с датой в ISO-формате.
+ * @param formatter - Форматтер Intl.DateTimeFormat. Можно взять из константы DATE_FORMATTER. По умолчанию выводит .
  * @returns Отформатированная строка.
  */
-export function getFormatDate(formatter: Intl.DateTimeFormat, date: string): string {
+export function getFormatDate(
+	date: string,
+	formatter: Intl.DateTimeFormat = DATE_FORMATTER.short
+): string {
 	if (!date) return 'Дата не указана';
 
 	return formatter.format(new Date(date));
